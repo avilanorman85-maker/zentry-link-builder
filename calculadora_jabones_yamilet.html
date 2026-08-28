@@ -1,0 +1,2630 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Calculadora de Jabones Artesanales — Belleza Emprendedora</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --dg:#3D5A3E;
+  --mg:#5C7A5D;
+  --lg:#8FA98B;
+  --lgg:#D6EAD7;
+  --cream:#FAF6F1;
+  --cream2:#F0EBE3;
+  --rose:#C97B84;
+  --rose-l:#F5E8EA;
+  --gold:#C5A95A;
+  --gold-l:#F0E6C0;
+  --brown:#4A3728;
+  --brown-m:#7A5C48;
+  --white:#FFFFFF;
+  --ok:#27AE60;
+  --ok-l:#E8F8EF;
+  --warn:#E67E22;
+  --warn-l:#FEF3E2;
+  --err:#C0392B;
+  --err-l:#FDECEA;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Poppins',sans-serif;background:var(--cream);color:var(--brown);min-height:100vh;overflow-x:hidden}
+h1,h2,h3{font-family:'Playfair Display',serif}
+
+/* ── HEADER ── */
+.app-header{
+  background:linear-gradient(135deg,var(--dg) 0%,var(--mg) 100%);
+  padding:20px 20px 0;
+  text-align:center;
+}
+.app-logo-area{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:10px}
+.app-logo-circle{
+  width:48px;height:48px;background:var(--gold);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;flex-shrink:0;
+}
+.app-title{color:var(--white);font-size:1.35rem;font-family:'Playfair Display',serif;line-height:1.2}
+.app-subtitle{color:var(--gold-l);font-size:.75rem;font-weight:300;letter-spacing:.06em;text-transform:uppercase}
+
+/* ── TABS ── */
+.tabs{display:flex;border-top:2px solid rgba(255,255,255,.15);margin-top:14px}
+.tab-btn{
+  flex:1;padding:11px 8px;background:none;border:none;cursor:pointer;
+  color:rgba(255,255,255,.6);font-family:'Poppins',sans-serif;font-size:.78rem;font-weight:500;
+  border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap;
+}
+.tab-btn.active{color:var(--gold-l);border-bottom-color:var(--gold)}
+.tab-btn:hover:not(.active){color:rgba(255,255,255,.85)}
+
+/* ── CONTENT ── */
+.tab-panel{display:none;padding:20px 16px;max-width:640px;margin:0 auto}
+.tab-panel.active{display:block}
+
+/* ── CARDS ── */
+.card{
+  background:var(--white);border-radius:14px;padding:18px;
+  border:1.5px solid var(--cream2);margin-bottom:16px;
+}
+.card-title{
+  font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--mg);margin-bottom:14px;display:flex;align-items:center;gap:8px;
+}
+.card-title .step-num{
+  width:22px;height:22px;background:var(--dg);color:var(--white);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;font-weight:700;flex-shrink:0;
+}
+
+/* ── INPUTS ── */
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.field-group{display:flex;flex-direction:column;gap:5px}
+label{font-size:.78rem;color:var(--brown-m);font-weight:500}
+input[type=number],select{
+  width:100%;padding:10px 12px;border:1.5px solid var(--cream2);
+  border-radius:8px;font-family:'Poppins',sans-serif;font-size:.95rem;
+  color:var(--brown);background:var(--cream);transition:border-color .2s;
+  -moz-appearance:textfield;
+}
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+input[type=number]:focus,select:focus{outline:none;border-color:var(--dg);background:var(--white)}
+select{cursor:pointer}
+
+/* ── SLIDER ── */
+.slider-wrap{margin-bottom:14px}
+.slider-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.slider-label{font-size:.82rem;font-weight:500;color:var(--brown)}
+.slider-val{
+  font-size:.82rem;font-weight:700;color:var(--dg);
+  background:var(--lgg);border-radius:6px;padding:2px 8px;
+}
+input[type=range]{
+  width:100%;height:5px;-webkit-appearance:none;appearance:none;
+  background:var(--cream2);border-radius:3px;outline:none;cursor:pointer;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:18px;height:18px;
+  background:var(--dg);border-radius:50%;cursor:pointer;
+  border:2px solid var(--white);box-shadow:0 1px 4px rgba(0,0,0,.2);
+}
+.slider-info{
+  display:flex;justify-content:space-between;margin-top:4px;
+  font-size:.7rem;color:var(--brown-m);
+}
+
+/* ── STATUS BADGE ── */
+.status-row{display:flex;gap:8px;align-items:center;margin-top:6px;flex-wrap:wrap}
+.badge{
+  font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:20px;
+  white-space:nowrap;
+}
+.badge.ok{background:var(--ok-l);color:var(--ok)}
+.badge.warn{background:var(--warn-l);color:var(--warn)}
+.badge.err{background:var(--err-l);color:var(--err)}
+.status-detail{font-size:.72rem;color:var(--brown-m)}
+
+/* ── RESULTS TABLE ── */
+.result-table{width:100%;border-collapse:collapse;font-size:.85rem}
+.result-table th{
+  text-align:left;padding:8px 10px;background:var(--dg);color:var(--white);
+  font-weight:600;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;
+}
+.result-table th:last-child,.result-table td:last-child{text-align:right}
+.result-table tr:nth-child(even) td{background:var(--cream)}
+.result-table td{padding:9px 10px;border-bottom:1px solid var(--cream2);color:var(--brown)}
+.result-table tr.total td{
+  background:var(--lgg);font-weight:700;color:var(--dg);border-bottom:none;
+}
+
+/* ── KPI CARDS ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.kpi{
+  background:var(--white);border-radius:10px;padding:12px 10px;text-align:center;
+  border:1.5px solid var(--cream2);
+}
+.kpi-val{font-size:1.3rem;font-weight:700;color:var(--dg);font-family:'Playfair Display',serif}
+.kpi-lbl{font-size:.65rem;color:var(--brown-m);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+
+/* ── AROMA HELPER ── */
+.aroma-box{
+  background:var(--rose-l);border-radius:10px;padding:14px;
+  border-left:3px solid var(--rose);margin-top:12px;
+}
+.aroma-box h4{font-size:.8rem;font-weight:700;color:var(--rose);margin-bottom:8px}
+.aroma-result{
+  display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;
+}
+.aroma-item{text-align:center}
+.aroma-num{font-size:1.4rem;font-weight:700;color:var(--brown);font-family:'Playfair Display',serif}
+.aroma-lbl{font-size:.68rem;color:var(--brown-m);text-transform:uppercase}
+
+/* ── COST SECTION ── */
+.cost-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.cost-field{display:flex;flex-direction:column;gap:4px}
+.cost-result-box{
+  background:linear-gradient(135deg,var(--dg),var(--mg));
+  border-radius:12px;padding:16px;color:var(--white);text-align:center;
+  margin-top:4px;
+}
+.cost-price{font-size:2rem;font-weight:700;font-family:'Playfair Display',serif;color:var(--gold-l)}
+.cost-desc{font-size:.72rem;opacity:.8;margin-top:2px}
+.profit-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.profit-pill{
+  flex:1;min-width:90px;background:rgba(255,255,255,.12);border-radius:8px;
+  padding:8px;text-align:center;
+}
+.profit-pill .val{font-size:1rem;font-weight:700;color:var(--gold-l)}
+.profit-pill .lbl{font-size:.65rem;opacity:.75}
+
+/* ── GUIDE TABLES ── */
+.guide-section{margin-bottom:20px}
+.guide-title{
+  font-size:.85rem;font-weight:700;color:var(--dg);
+  padding:8px 12px;background:var(--lgg);border-radius:8px;
+  margin-bottom:8px;display:flex;align-items:center;gap:8px;
+}
+.guide-table{width:100%;border-collapse:collapse;font-size:.8rem}
+.guide-table th{
+  background:var(--dg);color:var(--white);padding:7px 10px;
+  text-align:left;font-size:.7rem;font-weight:600;
+}
+.guide-table td{padding:7px 10px;border-bottom:1px solid var(--cream2);vertical-align:top}
+.guide-table tr:nth-child(even) td{background:var(--cream)}
+.pct{font-weight:700;color:var(--dg)}
+
+/* ── RECETARIO ── */
+.recipe-form{background:var(--white);border-radius:14px;padding:18px;border:1.5px solid var(--lgg);margin-bottom:16px}
+.recipe-form h3{font-size:.95rem;color:var(--dg);margin-bottom:14px}
+.recipe-name-input{
+  width:100%;padding:10px 14px;border:1.5px solid var(--cream2);
+  border-radius:8px;font-family:'Poppins',sans-serif;font-size:.9rem;
+  color:var(--brown);background:var(--cream);margin-bottom:10px;
+}
+.recipe-name-input:focus{outline:none;border-color:var(--dg)}
+.btn-save{
+  width:100%;padding:12px;background:var(--dg);color:var(--white);
+  border:none;border-radius:10px;font-family:'Poppins',sans-serif;
+  font-size:.9rem;font-weight:600;cursor:pointer;transition:background .2s;
+}
+.btn-save:hover{background:var(--mg)}
+.btn-save:active{transform:scale(.98)}
+.recipes-list{display:flex;flex-direction:column;gap:10px}
+.recipe-card{
+  background:var(--white);border-radius:12px;padding:14px 16px;
+  border:1.5px solid var(--cream2);
+}
+.recipe-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+.recipe-card-name{font-weight:700;font-size:.9rem;color:var(--dg)}
+.recipe-card-date{font-size:.68rem;color:var(--brown-m)}
+.recipe-card-body{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
+.rc-stat{text-align:center;background:var(--cream);border-radius:6px;padding:6px}
+.rc-stat-val{font-size:.95rem;font-weight:700;color:var(--brown)}
+.rc-stat-lbl{font-size:.6rem;color:var(--brown-m);text-transform:uppercase}
+.recipe-actions{display:flex;gap:8px}
+.btn-action{
+  flex:1;padding:7px;border-radius:8px;border:1.5px solid var(--cream2);
+  background:none;font-family:'Poppins',sans-serif;font-size:.75rem;
+  font-weight:600;cursor:pointer;transition:all .15s;
+}
+.btn-load{color:var(--dg);border-color:var(--lg)}
+.btn-load:hover{background:var(--lgg)}
+.btn-print{color:var(--brown-m)}
+.btn-print:hover{background:var(--cream2)}
+.btn-del{color:var(--err);border-color:var(--err-l)}
+.btn-del:hover{background:var(--err-l)}
+.empty-state{
+  text-align:center;padding:32px 16px;color:var(--brown-m);
+}
+.empty-state .icon{font-size:2.5rem;margin-bottom:10px}
+.empty-state p{font-size:.85rem;line-height:1.5}
+
+/* ── PRINT REPORT ── */
+.print-btn-wrap{margin-bottom:16px}
+.btn-print-full{
+  width:100%;padding:12px;
+  background:var(--gold);color:var(--brown);
+  border:none;border-radius:10px;font-family:'Poppins',sans-serif;
+  font-size:.9rem;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-print-full:hover{background:var(--gold-l)}
+
+/* ── CTA BANNER ── */
+.cta-banner{
+  background:linear-gradient(135deg,var(--dg),var(--mg));
+  border-radius:14px;padding:20px;text-align:center;margin-top:8px;margin-bottom:24px;
+}
+.cta-banner h3{color:var(--white);font-size:1.05rem;margin-bottom:6px}
+.cta-banner p{color:var(--gold-l);font-size:.78rem;margin-bottom:14px;line-height:1.5}
+.cta-btn{
+  display:inline-block;background:var(--rose);color:var(--white);
+  padding:11px 22px;border-radius:10px;text-decoration:none;
+  font-weight:700;font-size:.85rem;transition:background .2s;
+}
+.cta-btn:hover{background:#a8626a}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--dg);color:var(--white);padding:10px 20px;border-radius:30px;
+  font-size:.82rem;font-weight:600;transition:transform .3s ease;z-index:999;
+  pointer-events:none;white-space:nowrap;
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+
+/* ── DASHBOARD LAYOUT ── */
+.cost-dashboard{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:4px}
+@media(max-width:560px){.cost-dashboard{grid-template-columns:1fr}}
+.cost-inputs-col{}
+.cost-visual-col{display:flex;flex-direction:column;gap:12px}
+
+/* Section dividers inside card */
+.cost-section-label{
+  font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--brown-m);margin:14px 0 8px;padding-bottom:4px;
+  border-bottom:1.5px solid var(--cream2);
+}
+.cost-section-label:first-child{margin-top:0}
+
+/* Slider row for percentages */
+.pct-slider-row{display:flex;flex-direction:column;gap:3px;margin-bottom:10px}
+.pct-slider-header{display:flex;justify-content:space-between;align-items:center}
+.pct-slider-label{font-size:.78rem;color:var(--brown);font-weight:500}
+.pct-slider-val{font-size:.78rem;font-weight:700;color:var(--dg);background:var(--lgg);border-radius:5px;padding:1px 7px}
+
+/* Pie chart canvas */
+.pie-wrap{
+  background:var(--white);border-radius:12px;
+  border:1.5px solid var(--cream2);padding:14px;
+  display:flex;flex-direction:column;align-items:center;
+}
+.pie-title{font-size:.72rem;font-weight:700;color:var(--brown-m);text-transform:uppercase;
+  letter-spacing:.07em;margin-bottom:10px;text-align:center}
+canvas#pie-chart{max-width:180px;max-height:180px}
+.pie-legend{display:flex;flex-direction:column;gap:5px;margin-top:10px;width:100%}
+.legend-item{display:flex;align-items:center;gap:7px;font-size:.72rem;color:var(--brown)}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.legend-right{margin-left:auto;font-weight:700;color:var(--dg)}
+
+/* KPI dashboard 2x2 */
+.kpi-dash{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.kpi-d{
+  background:var(--white);border-radius:10px;padding:10px;text-align:center;
+  border:1.5px solid var(--cream2);
+}
+.kpi-d.highlight{background:var(--dg);border-color:var(--dg)}
+.kpi-d-val{font-size:1.15rem;font-weight:700;color:var(--dg);font-family:'Playfair Display',serif}
+.kpi-d.highlight .kpi-d-val{color:var(--gold-l)}
+.kpi-d-lbl{font-size:.62rem;color:var(--brown-m);text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+.kpi-d.highlight .kpi-d-lbl{color:rgba(255,255,255,.65)}
+
+/* Result summary bar */
+.result-summary{
+  background:linear-gradient(135deg,var(--dg),var(--mg));
+  border-radius:12px;padding:14px;color:var(--white);
+}
+.rs-main{font-size:1.6rem;font-weight:700;font-family:'Playfair Display',serif;color:var(--gold-l);line-height:1}
+.rs-label{font-size:.68rem;opacity:.75;margin-bottom:2px}
+.rs-row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.rs-pill{flex:1;min-width:70px;background:rgba(255,255,255,.12);border-radius:7px;padding:7px 6px;text-align:center}
+.rs-pill-val{font-size:.88rem;font-weight:700;color:var(--gold-l)}
+.rs-pill-lbl{font-size:.6rem;opacity:.7}
+
+
+
+/* ── PROGRESS BAR ── */
+.progress-bar{
+  background:rgba(0,0,0,.25);
+  padding:10px 16px;
+  display:flex;align-items:center;justify-content:center;
+  gap:0;overflow-x:auto;scrollbar-width:none;
+}
+.progress-bar::-webkit-scrollbar{display:none}
+.pb-step{
+  display:flex;align-items:center;gap:0;flex-shrink:0;
+}
+.pb-dot{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  cursor:pointer;padding:0 4px;
+}
+.pb-circle{
+  width:30px;height:30px;border-radius:50%;
+  background:rgba(255,255,255,.15);
+  border:2px solid rgba(255,255,255,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;transition:all .2s;
+}
+.pb-dot.active .pb-circle{
+  background:var(--gold);border-color:var(--gold);
+  box-shadow:0 0 0 3px rgba(197,169,90,.3);
+}
+.pb-dot.done .pb-circle{
+  background:var(--ok);border-color:var(--ok);
+}
+.pb-label{
+  font-size:.55rem;color:rgba(255,255,255,.6);
+  text-transform:uppercase;letter-spacing:.06em;
+  white-space:nowrap;
+}
+.pb-dot.active .pb-label{color:var(--gold-l);font-weight:700}
+.pb-dot.done .pb-label{color:rgba(255,255,255,.8)}
+.pb-arrow{
+  color:rgba(255,255,255,.25);font-size:.75rem;
+  padding:0 2px;flex-shrink:0;margin-bottom:14px;
+}
+
+/* ── BREAKDOWN TABLE ── */
+.breakdown-card{
+  background:var(--white);border-radius:14px;
+  border:1.5px solid var(--cream2);
+  padding:18px;margin-top:0;
+}
+.breakdown-title{
+  font-size:.72rem;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--mg);
+  margin-bottom:12px;display:flex;align-items:center;gap:8px;
+}
+.bd-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.bd-table thead tr{background:var(--dg)}
+.bd-table thead th{
+  color:var(--white);padding:8px 10px;
+  font-size:.7rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.05em;
+  text-align:left;
+}
+.bd-table thead th:nth-child(2),
+.bd-table thead th:nth-child(3),
+.bd-table thead th:nth-child(4){text-align:right}
+.bd-table tbody tr:nth-child(even) td{background:var(--cream)}
+.bd-table tbody td{
+  padding:8px 10px;
+  border-bottom:1px solid var(--cream2);
+  color:var(--brown);vertical-align:middle;
+}
+.bd-table tbody td:nth-child(2),
+.bd-table tbody td:nth-child(3),
+.bd-table tbody td:nth-child(4){text-align:right;font-variant-numeric:tabular-nums}
+.bd-table .section-row td{
+  background:var(--lgg);
+  font-size:.68rem;font-weight:700;
+  color:var(--mg);text-transform:uppercase;
+  letter-spacing:.06em;padding:5px 10px;
+  border-bottom:none;
+}
+.bd-table .subtotal-row td{
+  background:var(--cream2);
+  font-weight:700;color:var(--dg);
+  border-bottom:2px solid var(--lg);
+}
+.bd-table .total-row td{
+  background:#1B3A1C;color:var(--white);
+  font-weight:700;font-size:.88rem;
+  border-bottom:none;
+}
+.bd-table .total-row td:nth-child(1){color:var(--gold2,#F5C842);font-size:.9rem}
+.bd-table .total-row td:nth-child(2){color:rgba(255,255,255,.9);font-size:.72rem;font-weight:400}
+.bd-table .total-row td:nth-child(3),
+.bd-table .total-row td:nth-child(4){color:var(--gold-l);font-size:.95rem}
+.formula-chip{
+  display:inline-block;
+  background:var(--gold-l);color:var(--brown);
+  border-radius:5px;padding:1px 6px;
+  font-size:.65rem;font-weight:600;
+  font-family:'Courier New',monospace;
+  margin-left:4px;
+}
+.bd-note{
+  font-size:.72rem;color:var(--brown-m);
+  background:var(--lgg);border-radius:8px;
+  padding:8px 12px;margin-top:10px;
+  border-left:3px solid var(--dg);
+  line-height:1.55;
+}
+
+
+/* ── PHOTO UPLOAD ── */
+.photo-upload-area{
+  border:2px dashed var(--lg);border-radius:12px;
+  padding:14px;text-align:center;cursor:pointer;
+  background:var(--cream);transition:border-color .2s,background .2s;
+  margin-bottom:10px;position:relative;overflow:hidden;
+}
+.photo-upload-area:hover{border-color:var(--dg);background:var(--lgg)}
+.photo-upload-area input[type=file]{
+  position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;
+}
+.photo-placeholder{font-size:1.8rem;margin-bottom:4px}
+.photo-placeholder-text{font-size:.75rem;color:var(--brown-m)}
+.photo-preview-wrap{position:relative;display:inline-block}
+.photo-preview{
+  width:100%;max-height:160px;object-fit:cover;
+  border-radius:10px;display:block;
+}
+.photo-remove{
+  position:absolute;top:6px;right:6px;
+  background:rgba(192,57,43,.85);color:#fff;
+  border:none;border-radius:50%;width:24px;height:24px;
+  font-size:.8rem;cursor:pointer;display:flex;
+  align-items:center;justify-content:center;
+}
+/* Recipe card with photo */
+.recipe-card-photo{
+  width:100%;height:100px;object-fit:cover;
+  border-radius:8px 8px 0 0;display:block;
+}
+.recipe-card-photo-placeholder{
+  width:100%;height:100px;
+  background:var(--cream2);border-radius:8px 8px 0 0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:2rem;color:var(--lg);
+}
+
+/* ── PRINT STYLES ── */
+@media print{
+  .app-header,.tabs,.btn-save,.recipe-actions,.cta-banner,.btn-print-full,.print-btn-wrap{display:none!important}
+  .tab-panel{display:block!important}
+  body{background:white}
+  .card{break-inside:avoid}
+}
+@media(max-width:400px){
+  .kpi-grid{grid-template-columns:repeat(3,1fr)}
+  .kpi-val{font-size:1.05rem}
+  .cost-grid{grid-template-columns:1fr}
+  .field-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="app-header">
+  <div class="app-logo-area">
+    <div class="app-logo-circle">🧼</div>
+    <div>
+      <div class="app-title">Calculadora de Jabones</div>
+      <div class="app-subtitle">Belleza Emprendedora · IMEmprende</div>
+    </div>
+  </div>
+  <!-- BARRA DE PROGRESO VISUAL -->
+  <div class="progress-bar" id="progress-bar">
+    <div class="pb-step">
+      <div class="pb-dot active" id="pb-calc" onclick="switchTab('calc',document.querySelectorAll('.tab-btn')[0])">
+        <div class="pb-circle">🧮</div><div class="pb-label">Calcular</div>
+      </div>
+    </div>
+    <span class="pb-arrow">›</span>
+    <div class="pb-step">
+      <div class="pb-dot" id="pb-recipes" onclick="switchTab('recipes',document.querySelectorAll('.tab-btn')[1])">
+        <div class="pb-circle">📒</div><div class="pb-label">Recetario</div>
+      </div>
+    </div>
+    <span class="pb-arrow">›</span>
+    <div class="pb-step">
+      <div class="pb-dot" id="pb-ficha" onclick="switchTab('ficha',document.querySelectorAll('.tab-btn')[2])">
+        <div class="pb-circle">🏷️</div><div class="pb-label">Ficha</div>
+      </div>
+    </div>
+    <span class="pb-arrow">›</span>
+    <div class="pb-step">
+      <div class="pb-dot" id="pb-guide" onclick="switchTab('guide',document.querySelectorAll('.tab-btn')[3])">
+        <div class="pb-circle">📋</div><div class="pb-label">Guía</div>
+      </div>
+    </div>
+    <span class="pb-arrow">›</span>
+    <div class="pb-step">
+      <div class="pb-dot" id="pb-sim" onclick="switchTab('sim',document.querySelectorAll('.tab-btn')[4])">
+        <div class="pb-circle">📈</div><div class="pb-label">Simular</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS (nuevo orden) -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('calc',this)">🧮 Calcular</button>
+    <button class="tab-btn" onclick="switchTab('recipes',this)">📒 Recetario</button>
+    <button class="tab-btn" onclick="switchTab('ficha',this)">🏷️ Ficha</button>
+    <button class="tab-btn" onclick="switchTab('guide',this)">📋 Guía</button>
+    <button class="tab-btn" onclick="switchTab('sim',this)">📈 Simular</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- PESTAÑA 1 — CALCULADORA                -->
+<!-- ════════════════════════════════════════ -->
+<div class="tab-panel active" id="tab-calc">
+
+  <!-- PASO 1: Base -->
+  <div class="card">
+    <div class="card-title"><div class="step-num">1</div>Cantidad de base de glicerina</div>
+    <div class="field-row">
+      <div class="field-group">
+        <label>Cantidad</label>
+        <input type="number" id="base-amount" value="500" min="50" max="5000" step="10" oninput="recalc()">
+      </div>
+      <div class="field-group">
+        <label>Unidad</label>
+        <select id="base-unit" onchange="recalc()">
+          <option value="g">Gramos (g)</option>
+          <option value="kg">Kilogramos (kg)</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px">
+      <div style="background:var(--cream);border-radius:8px;padding:10px">
+        <div style="font-size:.7rem;color:var(--brown-m);text-transform:uppercase;letter-spacing:.05em">Total en gramos</div>
+        <div id="total-g" style="font-size:1.2rem;font-weight:700;color:var(--dg)">500 g</div>
+      </div>
+      <div style="background:var(--cream);border-radius:8px;padding:10px">
+        <div style="font-size:.7rem;color:var(--brown-m);text-transform:uppercase;letter-spacing:.05em">Total en kilos</div>
+        <div id="total-kg" style="font-size:1.2rem;font-weight:700;color:var(--dg)">0.5 kg</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 2: Fórmula automática -->
+  <div class="card">
+    <div class="card-title"><div class="step-num">2</div>Fórmula estándar automática</div>
+    <div style="font-size:.78rem;color:var(--brown-m);margin-bottom:12px;background:var(--lgg);padding:8px 12px;border-radius:8px;border-left:3px solid var(--dg)">
+      Fórmula inicial sugerida <strong>96-2-1-1</strong> para bases de glicerina. <em>Ajusta según los ingredientes añadidos y las recomendaciones del proveedor</em> — algunos aditivos pueden cambiar el comportamiento del jabón.
+    </div>
+    <table class="result-table">
+      <thead><tr><th>Ingrediente</th><th>%</th><th>Gramos</th></tr></thead>
+      <tbody>
+        <tr><td>Base de glicerina</td><td><span class="pct">96%</span></td><td id="f-base">480 g</td></tr>
+        <tr><td>Esencia aromática</td><td><span class="pct">2%</span></td><td id="f-esencia">10 g</td></tr>
+        <tr><td>Aceite vegetal</td><td><span class="pct">1%</span></td><td id="f-aceite">5 g</td></tr>
+        <tr><td>Colorante / aditivo</td><td><span class="pct">1%</span></td><td id="f-color">5 g</td></tr>
+        <tr class="total"><td><strong>Total</strong></td><td><strong>100%</strong></td><td id="f-total"><strong>500 g</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PASO 3: Ajuste libre por ingrediente -->
+  <div class="card">
+    <div class="card-title"><div class="step-num">3</div>Ajusta cada ingrediente</div>
+    <div style="font-size:.78rem;color:var(--brown-m);margin-bottom:14px">
+      Mueve los sliders y la app valida si estás dentro del rango recomendado.
+    </div>
+
+    <!-- Esencia -->
+    <div class="slider-wrap">
+      <div class="slider-header">
+        <span class="slider-label">🌸 Esencia aromática / fragancia</span>
+        <span class="slider-val" id="sv-esencia">2 g</span>
+      </div>
+      <input type="range" id="sl-esencia" min="0" max="30" value="2" step="0.5" oninput="updateSlider('esencia')">
+      <div class="slider-info"><span>0 g</span><span>30 g</span></div>
+      <div class="status-row">
+        <span class="badge" id="sb-esencia">Calculando...</span>
+        <span class="status-detail" id="sd-esencia"></span>
+      </div>
+      <div id="sa-esencia" style="font-size:.72rem;color:var(--brown-m);margin-top:4px;background:var(--cream);padding:6px 8px;border-radius:6px;display:none"></div>
+    </div>
+
+    <!-- Aceite -->
+    <div class="slider-wrap" style="border-top:1px solid var(--cream2);padding-top:14px">
+      <div class="slider-header">
+        <span class="slider-label">🥥 Aceite vegetal o cosmético</span>
+        <span class="slider-val" id="sv-aceite">1 g</span>
+      </div>
+      <input type="range" id="sl-aceite" min="0" max="20" value="1" step="0.5" oninput="updateSlider('aceite')">
+      <div class="slider-info"><span>0 g</span><span>20 g</span></div>
+      <div class="status-row">
+        <span class="badge" id="sb-aceite">Calculando...</span>
+        <span class="status-detail" id="sd-aceite"></span>
+      </div>
+    </div>
+
+    <!-- Colorante -->
+    <div class="slider-wrap" style="border-top:1px solid var(--cream2);padding-top:14px">
+      <div class="slider-header">
+        <span class="slider-label">🎨 Colorante cosmético / mica</span>
+        <span class="slider-val" id="sv-color">1 g</span>
+      </div>
+      <input type="range" id="sl-color" min="0" max="10" value="1" step="0.1" oninput="updateSlider('color')">
+      <div class="slider-info"><span>0 g</span><span>10 g</span></div>
+      <div class="status-row">
+        <span class="badge" id="sb-color">Calculando...</span>
+        <span class="status-detail" id="sd-color"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 4: Asistente de aroma -->
+  <div class="card">
+    <div class="card-title"><div class="step-num">4</div>Asistente de intensidad de aroma</div>
+    <div style="font-size:.78rem;color:var(--brown-m);margin-bottom:10px">¿No sabes cuánta esencia usar? Elige la intensidad que buscas:</div>
+    <select id="aroma-intensity" onchange="updateAroma()" style="margin-bottom:0">
+      <option value="">— Elige la intensidad —</option>
+      <option value="suave">Suave (ideal para piel sensible)</option>
+      <option value="media">Media — equilibrada y agradable</option>
+      <option value="fuerte">Fuerte — aroma pronunciado</option>
+      <option value="extra">Extra fuerte — muy aromático</option>
+    </select>
+    <div id="aroma-result" style="display:none" class="aroma-box">
+      <h4>🌸 Recomendación de esencia</h4>
+      <div class="aroma-result">
+        <div class="aroma-item">
+          <div class="aroma-num" id="ar-pct">—</div>
+          <div class="aroma-lbl">% sugerido</div>
+        </div>
+        <div class="aroma-item">
+          <div class="aroma-num" id="ar-g">— g</div>
+          <div class="aroma-lbl">gramos</div>
+        </div>
+        <div class="aroma-item">
+          <div class="aroma-num" id="ar-ml">— ml</div>
+          <div class="aroma-lbl">mililitros</div>
+        </div>
+        <div class="aroma-item">
+          <div class="aroma-num" id="ar-gotas">— gt</div>
+          <div class="aroma-lbl">gotas aprox.</div>
+        </div>
+      </div>
+      <div id="ar-tip" style="font-size:.72rem;color:var(--brown-m);margin-top:8px;padding-top:8px;border-top:1px solid rgba(201,123,132,.2)"></div>
+    </div>
+  </div>
+
+  <!-- PASO 5: Costos COMPLETO -->
+  <div class="card">
+    <div class="card-title"><div class="step-num">5</div>Estructura completa de costos y precio de venta</div>
+
+    <div class="cost-dashboard">
+
+      <!-- COLUMNA IZQUIERDA: INPUTS -->
+      <div class="cost-inputs-col">
+
+        <!-- Nombre de receta -->
+        <div class="cost-section-label" style="background:linear-gradient(135deg,var(--dg),var(--mg));color:var(--white);border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:.75rem;letter-spacing:.07em">
+          🧼 Identifica tu receta
+        </div>
+        <div class="cost-field" style="margin-bottom:14px">
+          <label style="font-weight:700;color:var(--dg)">Nombre del jabón / receta</label>
+          <input type="text" id="nombre-receta" class="recipe-name-input"
+            placeholder="Ej: Jabón de Lavanda Premium"
+            maxlength="60" oninput="onNombreChange()"
+            style="margin-bottom:0;border:2px solid var(--dg);font-size:.95rem;background:#fff">
+          <div style="font-size:.7rem;color:var(--brown-m);margin-top:3px">
+            Este nombre identifica el costeo y se usa en el Recetario y la Ficha automáticamente.
+          </div>
+        </div>
+
+        <!-- Cantidad -->
+        <div class="cost-section-label">📦 Producción del lote</div>
+        <div class="cost-field" style="margin-bottom:10px">
+          <label>¿Cuántos jabones por lote?</label>
+          <input type="number" id="qty-jabones" value="5" min="1" max="200" step="1" oninput="calcCost()">
+        </div>
+
+        <!-- Ingredientes -->
+        <div class="cost-section-label">🌿 Ingredientes</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div class="cost-field">
+            <label>Base de glicerina (precio/kg)</label>
+            <input type="number" id="price-base" value="8.00" min="0" step="0.10" oninput="calcCost()">
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+            <div class="cost-field">
+              <label>Precio frasco de esencia</label>
+              <input type="number" id="price-esencia" value="5.00" min="0" step="0.10" oninput="calcCost()">
+            </div>
+            <div class="cost-field">
+              <label>Tamaño del frasco (ml)</label>
+              <input type="number" id="size-esencia" value="30" min="1" step="1" oninput="calcCost()" placeholder="ml">
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+            <div class="cost-field">
+              <label>Precio botella de aceite</label>
+              <input type="number" id="price-aceite" value="4.00" min="0" step="0.10" oninput="calcCost()">
+            </div>
+            <div class="cost-field">
+              <label>Tamaño de la botella (ml)</label>
+              <input type="number" id="size-aceite" value="100" min="1" step="1" oninput="calcCost()" placeholder="ml">
+            </div>
+          </div>
+          <div class="cost-field">
+            <label>Aditivos del lote (cúrcuma, café, miel, flores…)</label>
+            <input type="number" id="price-aditivos" value="0.50" min="0" step="0.05" oninput="calcCost()" placeholder="Costo total de aditivos en el lote">
+          </div>
+          <div class="cost-field">
+            <label>Empaque + etiqueta por jabón</label>
+            <input type="number" id="price-empaque" value="0.30" min="0" step="0.05" oninput="calcCost()">
+          </div>
+        </div>
+
+        <!-- Mano de obra -->
+        <div class="cost-section-label">👐 Mano de obra</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div class="cost-field">
+            <label>Horas trabajadas por lote</label>
+            <input type="number" id="horas-lote" value="2" min="0" max="24" step="0.5" oninput="calcCost()">
+          </div>
+          <div class="cost-field">
+            <label>Valor de tu hora (USD)</label>
+            <input type="number" id="valor-hora" value="2.50" min="0" step="0.25" oninput="calcCost()">
+          </div>
+        </div>
+
+        <!-- Costos Fijos -->
+        <div class="cost-section-label">🏠 Costos fijos (% sobre ingredientes)</div>
+        <div class="pct-slider-row">
+          <div class="pct-slider-header">
+            <span class="pct-slider-label">Luz, agua, internet, espacio del hogar</span>
+            <span class="pct-slider-val" id="pct-fijos-val">12%</span>
+          </div>
+          <input type="range" id="pct-fijos" min="5" max="30" value="12" step="1" oninput="updPct('fijos');calcCost()">
+          <div class="slider-info"><span>5%</span><span style="font-size:.68rem;color:var(--brown-m)">Aplica sobre costo ingredientes</span><span>30%</span></div>
+        </div>
+
+        <!-- Costos Variables -->
+        <div class="cost-section-label">📦 Costos variables (% sobre ingredientes)</div>
+        <div class="pct-slider-row">
+          <div class="pct-slider-header">
+            <span class="pct-slider-label">Bolsas, limpieza, consumibles, otros</span>
+            <span class="pct-slider-val" id="pct-var-val">10%</span>
+          </div>
+          <input type="range" id="pct-var" min="3" max="25" value="10" step="1" oninput="updPct('var');calcCost()">
+          <div class="slider-info"><span>3%</span><span style="font-size:.68rem;color:var(--brown-m)">Sobre costo ingredientes</span><span>25%</span></div>
+        </div>
+
+      </div><!-- /col izquierda -->
+
+      <!-- COLUMNA DERECHA: VISUAL -->
+      <div class="cost-visual-col">
+
+        <!-- Resumen costo total -->
+        <div class="result-summary">
+          <div class="rs-label">Costo real por jabón</div>
+          <div class="rs-main" id="costo-jabon">$0.00</div>
+          <div id="costo-lote" style="font-size:.7rem;opacity:.7;margin-top:2px"></div>
+          <div class="rs-row">
+            <div class="rs-pill"><div class="rs-pill-val" id="precio-min">$0.00</div><div class="rs-pill-lbl">Mínimo 40%</div></div>
+            <div class="rs-pill"><div class="rs-pill-val" id="precio-ideal">$0.00</div><div class="rs-pill-lbl">Ideal 65%</div></div>
+            <div class="rs-pill"><div class="rs-pill-val" id="precio-premium">$0.00</div><div class="rs-pill-lbl">Premium 85%</div></div>
+          </div>
+        </div>
+
+        <!-- KPI Dashboard 2x2 -->
+        <div class="kpi-dash">
+          <div class="kpi-d highlight">
+            <div class="kpi-d-val" id="kd-ganancia">$0.00</div>
+            <div class="kpi-d-lbl">Ganancia / jabón</div>
+          </div>
+          <div class="kpi-d">
+            <div class="kpi-d-val" id="kd-margen">65%</div>
+            <div class="kpi-d-lbl">Margen neto</div>
+          </div>
+          <div class="kpi-d">
+            <div class="kpi-d-val" id="kd-mes50">$0.00</div>
+            <div class="kpi-d-lbl">50 jabones / mes</div>
+          </div>
+          <div class="kpi-d">
+            <div class="kpi-d-val" id="kd-roi">0%</div>
+            <div class="kpi-d-lbl">ROI del lote</div>
+          </div>
+        </div>
+
+        <!-- Pie Chart -->
+        <div class="pie-wrap">
+          <div class="pie-title">Estructura de costos</div>
+          <canvas id="pie-chart" width="180" height="180"></canvas>
+          <div class="pie-legend">
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#3D5A3E"></div>
+              <span>🌿 Ingredientes</span>
+              <span class="legend-right" id="leg-ing">0%</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#C97B84"></div>
+              <span>👐 Mano de obra</span>
+              <span class="legend-right" id="leg-mo">0%</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#C5A95A"></div>
+              <span>🏠 Costos fijos</span>
+              <span class="legend-right" id="leg-fijos">0%</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#7A5C48"></div>
+              <span>📦 Costos variables</span>
+              <span class="legend-right" id="leg-var">0%</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /col derecha -->
+    </div><!-- /dashboard -->
+  </div>
+
+
+  <!-- TABLA DESGLOSE DE COSTOS -->
+  <div class="breakdown-card" id="breakdown-card">
+    <div class="breakdown-title">
+      <div class="step-num" style="background:var(--gold);color:var(--brown)">∑</div>
+      Desglose completo del cálculo — ¿De dónde sale el costo?
+    </div>
+    <table class="bd-table">
+      <thead>
+        <tr>
+          <th>Componente</th>
+          <th>Fórmula aplicada</th>
+          <th>Costo del lote</th>
+          <th>Costo por jabón</th>
+        </tr>
+      </thead>
+      <tbody id="bd-tbody">
+        <!-- Se rellena dinámicamente con JS -->
+      </tbody>
+    </table>
+    <div class="bd-note" id="bd-note">
+      Completa los campos del Paso 5 para ver el desglose detallado de costos.
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-banner">
+    <h3>¿Quieres 30 recetas premium con costos calculados?</h3>
+    <p>Accede al programa completo: Jabones Artesanales · Crea tu Marca Natural y Aprende a Vender</p>
+    <a href="https://pay.hotmart.com/J106749823B?checkoutMode=10" target="_blank" class="cta-btn">
+      🧼 Ver el programa — $16.99 USD
+    </a>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- PESTAÑA 2 — GUÍA                       -->
+<!-- ════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-guide">
+
+  <div class="guide-section">
+    <div class="guide-title">🧴 Esencia aromática — rangos recomendados</div>
+    <table class="guide-table">
+      <thead><tr><th>%</th><th>En 100 g</th><th>Uso recomendado</th></tr></thead>
+      <tbody>
+        <tr><td class="pct">0.5–1%</td><td>0.5–1 g</td><td>Piel sensible, bebés, aromas sutiles</td></tr>
+        <tr><td class="pct">1–2%</td><td>1–2 g</td><td>Opción equilibrada para principiantes ✅</td></tr>
+        <tr><td class="pct">2–3%</td><td>2–3 g</td><td>Aroma pronunciado, jabones premium</td></tr>
+        <tr><td class="pct">&gt;3%</td><td>&gt;3 g</td><td>Usar con cuidado — puede irritar la piel</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="guide-section">
+    <div class="guide-title">🥥 Aceites vegetales y cosméticos</div>
+    <table class="guide-table">
+      <thead><tr><th>%</th><th>En 100 g</th><th>Uso recomendado</th></tr></thead>
+      <tbody>
+        <tr><td class="pct">0.5%</td><td>0.5 g</td><td>Jabones ligeros y firmes</td></tr>
+        <tr><td class="pct">1%</td><td>1 g</td><td>Opción equilibrada para principiantes ✅</td></tr>
+        <tr><td class="pct">2%</td><td>2 g</td><td>Usar con cuidado — puede ablandar la base</td></tr>
+      </tbody>
+    </table>
+    <div style="background:var(--lgg);border-radius:8px;padding:10px;margin-top:8px;font-size:.78rem;color:var(--brown-m)">
+      <strong style="color:var(--dg)">Ejemplos de aceites:</strong> almendras, coco fraccionado, oliva, jojoba, vitamina E y ricino.
+    </div>
+  </div>
+
+  <div class="guide-section">
+    <div class="guide-title">🎨 Colorantes, micas y aditivos</div>
+    <table class="guide-table">
+      <thead><tr><th>Elemento</th><th>Rango</th><th>Consejo</th></tr></thead>
+      <tbody>
+        <tr><td>Colorante cosmético</td><td class="pct">0.1–1%</td><td>Agregar poco a poco para evitar manchar</td></tr>
+        <tr><td>Mica cosmética</td><td class="pct">0.1–1%</td><td>Ideal para brillo y efecto visual</td></tr>
+        <tr><td>Cúrcuma / especias</td><td class="pct">0.5–2%</td><td>Color natural, antiinflamatorio</td></tr>
+        <tr><td>Lavanda / flores</td><td class="pct">0.5–3%</td><td>Decorativo y aromático</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="guide-section">
+    <div class="guide-title">📐 Conversiones rápidas</div>
+    <table class="guide-table">
+      <thead><tr><th>Medida</th><th>Equivalencia</th><th>Nota</th></tr></thead>
+      <tbody>
+        <tr><td>1 cucharadita</td><td>~5 ml / ~5 g</td><td>Esencias y aceites</td></tr>
+        <tr><td>1 cucharada</td><td>~15 ml / ~15 g</td><td>Aceites vegetales</td></tr>
+        <tr><td>1 ml de esencia</td><td>~20–25 gotas</td><td>Usar gotero graduado</td></tr>
+        <tr><td>1 g de esencia</td><td>~1.05 ml</td><td>Densidad similar al agua</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="guide-section">
+    <div class="guide-title">🧼 Las 30 recetas del programa</div>
+    <table class="guide-table">
+      <thead><tr><th>Tipo</th><th>Receta</th><th>Rentabilidad</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="10" style="background:var(--lgg);font-weight:700;color:var(--dg);vertical-align:top;padding-top:10px">Glicerina</td><td>Lavanda clásica</td><td>⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>Miel y avena</td><td>⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>Avena natural</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td>Coco tropical</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td>Rosas y pétalos</td><td>⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>Transparente premium</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td>Café suave</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td>Aloe vera</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td>Limón detox</td><td>⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>Canela y naranja</td><td>⭐⭐⭐</td></tr>
+        <tr><td rowspan="10" style="background:var(--rose-l);font-weight:700;color:var(--rose);vertical-align:top;padding-top:10px">Exfoliante</td><td>Café intenso</td><td>⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>Azúcar morena</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td>Avena + miel</td><td>⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>Sal marina</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td>Coco vainilla</td><td>⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>Cacao oscuro</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td>Limón detox</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td>Hierbas naturales</td><td>⭐⭐⭐</td></tr>
+        <tr><td>Arroz molido</td><td>⭐⭐⭐</td></tr>
+        <tr><td>Menta refrescante</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td rowspan="10" style="background:var(--gold-l);font-weight:700;color:var(--brown);vertical-align:top;padding-top:10px">Hidratante</td><td>Miel pura</td><td>⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>Aloe vera</td><td>⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>Karité premium</td><td>⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>Aceite de oliva</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td>Leche y miel</td><td>⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>Avena cremosa</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td>Coco suave</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td>Rosa mosqueta</td><td>⭐⭐⭐⭐⭐</td></tr>
+        <tr><td>Almendras suaves</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td>Lavanda calmante</td><td>⭐⭐⭐⭐⭐</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:12px">
+      <a href="https://pay.hotmart.com/J106749823B?checkoutMode=10" target="_blank"
+         style="display:block;text-align:center;background:var(--dg);color:var(--white);padding:12px;border-radius:10px;text-decoration:none;font-weight:700;font-size:.85rem">
+        🧼 Acceder a todas las recetas completas — $16.99
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- PESTAÑA 3 — FICHA DEL PRODUCTO         -->
+<!-- ════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-ficha">
+  <div class="card">
+    <div class="card-title"><div class="step-num" style="background:var(--rose)">★</div>Generador de Ficha del Producto</div>
+    <p style="font-size:.8rem;color:var(--brown-m);margin-bottom:12px">
+      Selecciona una receta guardada para cargar todos los datos automáticamente, o completa manualmente.
+    </p>
+
+    <!-- SELECTOR DE RECETA -->
+    <div style="background:var(--rose-l);border-radius:10px;padding:14px;border-left:3px solid var(--rose);margin-bottom:14px">
+      <div style="font-size:.75rem;font-weight:700;color:var(--rose);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">
+        📒 Cargar desde Recetario
+      </div>
+      <select id="ficha-recipe-selector" onchange="loadRecipeToFicha()"
+        style="width:100%;padding:10px 12px;border:1.5px solid var(--rose);border-radius:8px;
+        font-family:'Poppins',sans-serif;font-size:.88rem;background:#fff;color:var(--brown)">
+        <option value="">▼ Seleccionar receta guardada...</option>
+      </select>
+      <div style="font-size:.7rem;color:var(--brown-m);margin-top:5px">
+        Los campos se llenan automáticamente al seleccionar. Solo completa beneficios y modo de uso.
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px">
+
+      <!-- Foto del jabón -->
+      <div class="cost-field">
+        <label>📸 Foto de tu jabón (opcional)</label>
+        <div class="photo-upload-area" id="ficha-photo-area">
+          <input type="file" accept="image/*" onchange="loadFichaPhoto(this)">
+          <div id="ficha-photo-placeholder">
+            <div class="photo-placeholder">📷</div>
+            <div class="photo-placeholder-text">Toca aquí para agregar una foto de tu jabón</div>
+          </div>
+          <div id="ficha-photo-preview" style="display:none" class="photo-preview-wrap">
+            <img id="ficha-photo-img" class="photo-preview" src="" alt="Foto del jabón">
+            <button class="photo-remove" onclick="removeFichaPhoto(event)" title="Quitar foto">✕</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="cost-field">
+        <label>Nombre de tu jabón</label>
+        <input type="text" id="ficha-nombre" class="recipe-name-input" placeholder="Ej: Jabón de Aloe Vera Premium" style="margin-bottom:0">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="cost-field">
+          <label>Ingrediente principal</label>
+          <input type="text" id="ficha-ing1" class="recipe-name-input" placeholder="Ej: Aloe vera" style="margin-bottom:0">
+        </div>
+        <div class="cost-field">
+          <label>Ingrediente 2</label>
+          <input type="text" id="ficha-ing2" class="recipe-name-input" placeholder="Ej: Base de glicerina" style="margin-bottom:0">
+        </div>
+        <div class="cost-field">
+          <label>Ingrediente 3</label>
+          <input type="text" id="ficha-ing3" class="recipe-name-input" placeholder="Ej: Esencia natural" style="margin-bottom:0">
+        </div>
+        <div class="cost-field">
+          <label>Ingrediente 4 (opcional)</label>
+          <input type="text" id="ficha-ing4" class="recipe-name-input" placeholder="Ej: Aceite de coco" style="margin-bottom:0">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+        <div class="cost-field">
+          <label>Costo por jabón ($)</label>
+          <input type="number" id="ficha-costo" value="1.85" min="0" step="0.01" oninput="previewFicha()">
+        </div>
+        <div class="cost-field">
+          <label>Precio de venta ($)</label>
+          <input type="number" id="ficha-precio" value="5.50" min="0" step="0.10" oninput="previewFicha()">
+        </div>
+        <div class="cost-field">
+          <label>Peso del jabón (g)</label>
+          <input type="number" id="ficha-peso" value="100" min="10" step="5" oninput="previewFicha()">
+        </div>
+      </div>
+      <div class="cost-field">
+        <label>Beneficio principal del jabón</label>
+        <input type="text" id="ficha-beneficio" class="recipe-name-input" placeholder="Ej: Hidrata profundamente y calma la piel irritada" style="margin-bottom:0">
+      </div>
+      <div class="cost-field">
+        <label>Modo de uso</label>
+        <input type="text" id="ficha-uso" class="recipe-name-input" placeholder="Ej: Aplicar en la piel húmeda, masajear y enjuagar" style="margin-bottom:0">
+      </div>
+    </div>
+    <button class="btn-save" onclick="previewFicha()" style="background:var(--rose);margin-bottom:10px">
+      🏷️ Previsualizar ficha
+    </button>
+    <button class="btn-save" onclick="printFicha()">
+      🖨️ Descargar / Imprimir ficha en PDF
+    </button>
+  </div>
+
+  <!-- PREVIEW DE LA FICHA -->
+  <div id="ficha-preview" style="display:none">
+    <div style="background:#fff;border-radius:16px;border:2px solid var(--dg);padding:22px;margin-top:4px;position:relative">
+      <!-- Botón cerrar preview -->
+      <button onclick="document.getElementById('ficha-preview').style.display='none'"
+        style="position:absolute;top:12px;right:12px;
+          background:var(--err-l);border:1.5px solid var(--err);
+          color:var(--err);border-radius:50%;width:28px;height:28px;
+          font-size:1rem;cursor:pointer;display:flex;align-items:center;
+          justify-content:center;font-weight:700;line-height:1;
+          font-family:'Poppins',sans-serif;z-index:10"
+        title="Cerrar previsualización">✕</button>
+      <div style="text-align:center;border-bottom:2px solid var(--dg);padding-bottom:14px;margin-bottom:16px">
+        <div id="fp-photo-wrap" style="display:none;margin-bottom:10px">
+          <img id="fp-photo" src="" alt="Foto del jabón"
+            style="width:100%;max-height:160px;object-fit:cover;border-radius:10px;display:block">
+        </div>
+        <div style="font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mg);margin-bottom:4px">🌿 Belleza Emprendedora · IMEmprende</div>
+        <div style="font-size:1.4rem;font-weight:800;color:var(--dg);font-family:'Playfair Display',serif" id="fp-nombre">Jabón de Aloe Vera Premium</div>
+        <div style="font-size:.75rem;color:var(--brown-m);margin-top:3px" id="fp-peso">Peso neto: 100 g</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+        <div>
+          <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--mg);margin-bottom:6px">✅ Ingredientes</div>
+          <div id="fp-ingredientes" style="font-size:.85rem;color:var(--brown);line-height:1.7"></div>
+        </div>
+        <div>
+          <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--mg);margin-bottom:6px">🌟 Beneficios</div>
+          <div id="fp-beneficio" style="font-size:.82rem;color:var(--brown);line-height:1.5;font-style:italic"></div>
+          <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--mg);margin-top:10px;margin-bottom:4px">💧 Modo de uso</div>
+          <div id="fp-uso" style="font-size:.78rem;color:var(--brown-m);line-height:1.5"></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;background:var(--lgg);border-radius:10px;padding:12px;margin-bottom:10px">
+        <div style="text-align:center">
+          <div style="font-size:.58rem;color:var(--brown-m);text-transform:uppercase;letter-spacing:.05em">Costo producción</div>
+          <div style="font-size:1.1rem;font-weight:700;color:var(--dg);font-family:'Playfair Display',serif" id="fp-costo">$1.85</div>
+        </div>
+        <div style="text-align:center;border-left:1px solid rgba(62,90,62,.2)">
+          <div style="font-size:.58rem;color:var(--brown-m);text-transform:uppercase;letter-spacing:.05em">P. Mínimo</div>
+          <div style="font-size:1.1rem;font-weight:700;color:var(--brown-m);font-family:'Playfair Display',serif" id="fp-min">$3.10</div>
+        </div>
+        <div style="text-align:center;border-left:1px solid rgba(62,90,62,.2)">
+          <div style="font-size:.58rem;color:var(--brown-m);text-transform:uppercase;letter-spacing:.05em">P. Ideal ✅</div>
+          <div style="font-size:1.1rem;font-weight:700;color:var(--rose);font-family:'Playfair Display',serif" id="fp-precio">$5.50</div>
+        </div>
+        <div style="text-align:center;border-left:1px solid rgba(62,90,62,.2)">
+          <div style="font-size:.58rem;color:var(--brown-m);text-transform:uppercase;letter-spacing:.05em">Ganancia</div>
+          <div style="font-size:1.1rem;font-weight:700;color:var(--ok);font-family:'Playfair Display',serif" id="fp-ganancia">$3.65</div>
+        </div>
+      </div>
+      <div style="text-align:center;font-size:.65rem;color:rgba(62,90,62,.5);border-top:1px solid var(--cream2);padding-top:8px">
+        Jabones Artesanales: Crea tu Marca Natural · Belleza Emprendedora · IMEmprende
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- PESTAÑA 4 — SIMULADOR DE INGRESOS      -->
+<!-- ════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-sim">
+  <div class="card">
+    <div class="card-title"><div class="step-num" style="background:var(--ok)">📈</div>Simulador de Ingresos Mensuales</div>
+    <p style="font-size:.8rem;color:var(--brown-m);margin-bottom:16px">
+      Conecta directamente con tu sueño emprendedor. Ajusta los números y ve cuánto podrías ganar.
+    </p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+      <div class="cost-field">
+        <label>Precio de venta por jabón ($)</label>
+        <input type="number" id="sim-precio" value="6.00" min="0.50" step="0.50" oninput="runSim()">
+      </div>
+      <div class="cost-field">
+        <label>Costo por jabón ($)</label>
+        <input type="number" id="sim-costo" value="2.00" min="0.10" step="0.10" oninput="runSim()">
+      </div>
+    </div>
+
+    <!-- Escenarios -->
+    <div id="sim-scenarios" style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px"></div>
+
+    <!-- Slider personalizado -->
+    <div style="background:var(--lgg);border-radius:12px;padding:16px;margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-size:.82rem;font-weight:600;color:var(--dg)">🎯 ¿Cuántos jabones quieres vender?</span>
+        <span style="font-size:1rem;font-weight:700;color:var(--dg)" id="sim-slider-val">100</span>
+      </div>
+      <input type="range" id="sim-slider" min="10" max="500" value="100" step="10" oninput="runSim()">
+      <div class="slider-info"><span>10</span><span style="font-size:.7rem;color:var(--brown-m)">jabones al mes</span><span>500</span></div>
+
+      <!-- Resultado custom -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px" id="sim-custom-result">
+        <div style="background:#fff;border-radius:10px;padding:10px;text-align:center;border:1.5px solid var(--dg)">
+          <div style="font-size:.62rem;color:var(--brown-m);text-transform:uppercase;letter-spacing:.05em">Ventas totales</div>
+          <div style="font-size:1.3rem;font-weight:700;color:var(--dg);font-family:'Playfair Display',serif" id="sc-ventas">$600</div>
+        </div>
+        <div style="background:#fff;border-radius:10px;padding:10px;text-align:center;border:1.5px solid var(--rose)">
+          <div style="font-size:.62rem;color:var(--brown-m);text-transform:uppercase;letter-spacing:.05em">Costo total</div>
+          <div style="font-size:1.3rem;font-weight:700;color:var(--rose);font-family:'Playfair Display',serif" id="sc-costo">$200</div>
+        </div>
+        <div style="background:var(--dg);border-radius:10px;padding:10px;text-align:center">
+          <div style="font-size:.62rem;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.05em">Ganancia neta</div>
+          <div style="font-size:1.3rem;font-weight:700;color:var(--gold-l);font-family:'Playfair Display',serif" id="sc-ganancia">$400</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tiempo para meta -->
+    <div style="background:var(--rose-l);border-radius:12px;padding:14px;border-left:3px solid var(--rose)">
+      <div style="font-size:.78rem;font-weight:700;color:var(--rose);margin-bottom:8px">🎯 ¿Cuándo alcanzas tu meta de ingresos?</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+        <div class="cost-field">
+          <label style="font-size:.72rem">Meta mensual ($)</label>
+          <input type="number" id="sim-meta" value="300" min="50" step="50" oninput="runSim()">
+        </div>
+        <div style="background:#fff;border-radius:10px;padding:10px;text-align:center;align-self:end">
+          <div style="font-size:.65rem;color:var(--brown-m)">Necesitas vender</div>
+          <div style="font-size:1.4rem;font-weight:700;color:var(--rose);font-family:'Playfair Display',serif" id="sim-jabones-meta">75</div>
+          <div style="font-size:.65rem;color:var(--brown-m)">jabones/mes</div>
+        </div>
+      </div>
+      <div id="sim-motivacion" style="font-size:.8rem;color:var(--brown);font-style:italic;text-align:center;padding-top:8px;border-top:1px solid rgba(201,123,132,.2)"></div>
+    </div>
+  </div>
+
+  <!-- Tabla resumen -->
+  <div class="card">
+    <div class="card-title" style="margin-bottom:10px">📊 Tabla de escenarios de crecimiento</div>
+    <table class="result-table" id="sim-table">
+      <thead><tr><th>Jabones/mes</th><th>Ventas</th><th>Costos</th><th>Ganancia</th><th>Margen</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="cta-banner" style="margin-top:4px">
+    <h3>¡Tú puedes llegar a esos números!</h3>
+    <p>El programa completo tiene 30 recetas premium + estrategia de ventas + branding</p>
+    <a href="https://pay.hotmart.com/J106749823B?checkoutMode=10" target="_blank" class="cta-btn">
+      🧼 Ver el programa — $16.99 USD
+    </a>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- PESTAÑA 5 — RECETARIO                  -->
+<!-- ════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-recipes">
+
+  <!-- PASO 1: Guardar desde calculadora -->
+  <div class="recipe-form" style="background:linear-gradient(135deg,#F0FFF4,var(--cream));border:2px solid var(--lg)">
+    <h3 style="color:var(--dg);display:flex;align-items:center;gap:8px">
+      <span style="background:var(--dg);color:#fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0">1</span>
+      Guardar receta desde la calculadora
+    </h3>
+    <div style="font-size:.78rem;color:var(--brown-m);margin-bottom:12px">
+      La receta activa en la calculadora se guarda con todos sus datos: ingredientes, cantidades, costos y precios.
+    </div>
+
+    <!-- Preview de la receta actual -->
+    <div id="rec-current-preview" style="background:#fff;border-radius:10px;padding:12px;border:1.5px solid var(--cream2);margin-bottom:12px">
+      <div style="font-size:.7rem;color:var(--brown-m);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">Receta activa en calculadora:</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+        <div>
+          <div style="font-weight:700;color:var(--dg);font-size:.95rem" id="rec-cur-nombre">— Sin nombre —</div>
+          <div style="font-size:.75rem;color:var(--brown-m)" id="rec-cur-detalle">Completa el Paso 5 en Calcular</div>
+        </div>
+        <div style="display:flex;gap:10px">
+          <div style="text-align:center">
+            <div style="font-size:1rem;font-weight:700;color:var(--dg)" id="rec-cur-costo">$—</div>
+            <div style="font-size:.62rem;color:var(--brown-m)">Costo/jabón</div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-size:1rem;font-weight:700;color:var(--ok)" id="rec-cur-precio">$—</div>
+            <div style="font-size:.62rem;color:var(--brown-m)">Precio ideal</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Foto para la receta -->
+    <div class="photo-upload-area" id="rec-photo-area">
+      <input type="file" accept="image/*" onchange="loadRecipePhoto(this)">
+      <div id="rec-photo-placeholder">
+        <div class="photo-placeholder">📷</div>
+        <div class="photo-placeholder-text">Agrega foto de tu jabón (opcional)</div>
+      </div>
+      <div id="rec-photo-preview" style="display:none" class="photo-preview-wrap">
+        <img id="rec-photo-img" class="photo-preview" src="" alt="Foto">
+        <button class="photo-remove" onclick="removeRecipePhoto(event)" title="Quitar foto">✕</button>
+      </div>
+    </div>
+
+    <!-- Campo oculto para compatibilidad -->
+    <input type="hidden" id="recipe-name" value="">
+    <button class="btn-save" onclick="saveRecipe()" style="margin-top:8px">
+      💾 Guardar receta en mi biblioteca
+    </button>
+  </div>
+
+  <div class="print-btn-wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    <button class="btn-print-full" onclick="printRecetario()">🖨️ Imprimir PDF</button>
+    <button class="btn-print-full" onclick="exportCSV()"
+      style="background:var(--ok);color:#fff">
+      📊 Exportar a CSV
+    </button>
+  </div>
+
+  <div id="recipes-container">
+    <div class="empty-state">
+      <div class="icon">📒</div>
+      <p>Todavía no tienes recetas guardadas.<br>Usa la calculadora y luego guarda tu receta aquí.</p>
+    </div>
+  </div>
+
+  <div class="cta-banner" style="margin-top:20px">
+    <h3>30 recetas premium incluidas en el programa</h3>
+    <p>Glicerina · Exfoliantes · Hidratantes — con ingredientes, costos y estrategia de venta</p>
+    <a href="https://pay.hotmart.com/J106749823B?checkoutMode=10" target="_blank" class="cta-btn">
+      Ver el programa completo
+    </a>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── STATE ─────────────────────────────────
+let totalGrams = 500;
+
+// ── TABS ──────────────────────────────────
+// Tab order for progress bar
+const TAB_ORDER = ['calc','recipes','ficha','guide','sim'];
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+
+  // Update progress bar
+  const currentIdx = TAB_ORDER.indexOf(id);
+  TAB_ORDER.forEach((tab, i) => {
+    const dot = document.getElementById('pb-' + tab);
+    if (!dot) return;
+    dot.classList.remove('active','done');
+    if (i === currentIdx) dot.classList.add('active');
+    else if (i < currentIdx) dot.classList.add('done');
+  });
+
+  if (id === 'recipes') { renderRecipes(); updateRecCurrentPreview(); }
+  if (id === 'ficha')   { populateFichaSelector(); }
+  if (id === 'sim')     { runSim(); }
+}
+
+// ── RECALC MAIN ───────────────────────────
+function recalc() {
+  const amt = parseFloat(document.getElementById('base-amount').value) || 0;
+  const unit = document.getElementById('base-unit').value;
+  totalGrams = unit === 'kg' ? amt * 1000 : amt;
+
+  document.getElementById('total-g').textContent = totalGrams.toFixed(0) + ' g';
+  document.getElementById('total-kg').textContent = (totalGrams / 1000).toFixed(3) + ' kg';
+
+  // Formula auto
+  document.getElementById('f-base').textContent = (totalGrams * .96).toFixed(1) + ' g';
+  document.getElementById('f-esencia').textContent = (totalGrams * .02).toFixed(1) + ' g';
+  document.getElementById('f-aceite').textContent = (totalGrams * .01).toFixed(1) + ' g';
+  document.getElementById('f-color').textContent = (totalGrams * .01).toFixed(1) + ' g';
+  document.getElementById('f-total').innerHTML = '<strong>' + totalGrams.toFixed(0) + ' g</strong>';
+
+  // Update sliders display
+  updateSlider('esencia');
+  updateSlider('aceite');
+  updateSlider('color');
+  updateAroma();
+  calcCost();
+}
+
+// ── SLIDERS ───────────────────────────────
+const sliderConfig = {
+  esencia: { min: 0.5, ideal: [1, 2], max: 3, warn: 3, unit: 'g',
+    advice: 'Mejor medir en ml con jeringa o gotero graduado. 1 ml ≈ 20-25 gotas.' },
+  aceite:  { min: 0.5, ideal: [0.5, 2], max: 2, warn: 2, unit: 'g',
+    advice: 'Aceites recomendados: almendras, coco fraccionado, oliva, jojoba, vitamina E.' },
+  color:   { min: 0.1, ideal: [0.1, 1], max: 1, warn: 1, unit: 'g',
+    advice: 'Agregar poco a poco para controlar el tono. Menos es más con colorantes.' },
+};
+
+function updateSlider(key) {
+  const cfg = sliderConfig[key];
+  const grams = parseFloat(document.getElementById('sl-' + key).value);
+  const pct = totalGrams > 0 ? (grams / totalGrams * 100) : 0;
+  const pctMin = cfg.ideal[0]; const pctMax = cfg.ideal[1];
+
+  document.getElementById('sv-' + key).textContent = grams.toFixed(1) + ' g';
+
+  const badge = document.getElementById('sb-' + key);
+  const detail = document.getElementById('sd-' + key);
+  const advice = document.getElementById('sa-' + key);
+
+  let status = '';
+  if (pct < pctMin) { status = 'bajo'; badge.className = 'badge warn'; badge.textContent = 'Por debajo del rango'; }
+  else if (pct > cfg.warn) { status = 'alto'; badge.className = 'badge err'; badge.textContent = 'Por encima del rango'; }
+  else { status = 'ok'; badge.className = 'badge ok'; badge.textContent = 'Dentro de rango ✓'; }
+
+  detail.textContent = pct.toFixed(1) + '% — rango ideal ' + pctMin + '–' + pctMax + '%';
+
+  if (advice) {
+    advice.textContent = cfg.advice;
+    advice.style.display = 'block';
+  }
+
+  // ml conversion for esencia
+  if (key === 'esencia') {
+    const ml = (grams * 1.05).toFixed(2);
+    const gotas = Math.round(grams * 1.05 * 22);
+    detail.textContent += ' · ' + ml + ' ml · ~' + gotas + ' gotas';
+  }
+
+  calcCost();
+}
+
+// ── AROMA ────────────────────────────────
+function updateAroma() {
+  const sel = document.getElementById('aroma-intensity').value;
+  const box = document.getElementById('aroma-result');
+  if (!sel) { box.style.display = 'none'; return; }
+
+  const configs = {
+    suave:  { pct: 1,   tip: 'Ideal para piel sensible y niños. Aroma sutil y delicado.' },
+    media:  { pct: 1.5, tip: 'La opción más equilibrada. Perfecta para principiantes.' },
+    fuerte: { pct: 2.5, tip: 'Aroma pronunciado. Muy popular en ferias y mercados.' },
+    extra:  { pct: 3,   tip: 'Máximo recomendado. Usar con cuidado — puede irritar.' },
+  };
+
+  const cfg = configs[sel];
+  const g = (totalGrams * cfg.pct / 100);
+  const ml = (g * 1.05);
+  const gotas = Math.round(ml * 22);
+
+  document.getElementById('ar-pct').textContent = cfg.pct + '%';
+  document.getElementById('ar-g').textContent = g.toFixed(1) + ' g';
+  document.getElementById('ar-ml').textContent = ml.toFixed(2) + ' ml';
+  document.getElementById('ar-gotas').textContent = gotas + ' gt';
+  document.getElementById('ar-tip').textContent = '💡 ' + cfg.tip;
+  box.style.display = 'block';
+}
+
+// ── COST CALC ────────────────────────────
+// ── Slider pct labels ────────────────────────────────────────
+function updPct(key) {
+  const el = document.getElementById('pct-' + key);
+  if (!el) return;
+  const val = el.value;
+  const lbl = document.getElementById('pct-' + key + '-val');
+  if (lbl) lbl.textContent = val + '%';
+}
+
+// ── DRAW PIE CHART ────────────────────────────────────────────
+function drawPie(vals, colors) {
+  const canvas = document.getElementById('pie-chart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const cx = W/2, cy = H/2, r = Math.min(W,H)/2 - 4;
+  ctx.clearRect(0,0,W,H);
+  const total = vals.reduce((a,b)=>a+b,0);
+  if (total <= 0) return;
+  let start = -Math.PI/2;
+  vals.forEach((v,i) => {
+    const slice = (v/total) * Math.PI * 2;
+    ctx.beginPath();
+    ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,r,start,start+slice);
+    ctx.closePath();
+    ctx.fillStyle = colors[i];
+    ctx.fill();
+    ctx.strokeStyle = '#FAF6F1';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    start += slice;
+  });
+  // Center hole (donut)
+  ctx.beginPath();
+  ctx.arc(cx,cy,r*0.42,0,Math.PI*2);
+  ctx.fillStyle = '#FAF6F1';
+  ctx.fill();
+  // Center label
+  ctx.fillStyle = '#4A3728';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.font = 'bold 11px Poppins,Arial';
+  ctx.fillText('Costos', cx, cy-6);
+  ctx.font = '10px Poppins,Arial';
+  ctx.fillText('por jabón', cx, cy+8);
+}
+
+// ── Saved costs for other tabs ───────────────────────────────
+let lastCostJabon = 0, lastPrecioIdeal = 0, lastGanancia = 0;
+
+function calcCost() {
+  const qty          = parseInt(document.getElementById('qty-jabones').value) || 1;
+  const priceBase    = parseFloat(document.getElementById('price-base').value) || 0;
+  const priceEsencia = parseFloat(document.getElementById('price-esencia').value) || 0;
+  const sizeEsencia  = parseFloat(document.getElementById('size-esencia').value) || 30;
+  const priceAceite  = parseFloat(document.getElementById('price-aceite').value) || 0;
+  const sizeAceite   = parseFloat(document.getElementById('size-aceite').value) || 100;
+  const priceAditivos= parseFloat(document.getElementById('price-aditivos').value) || 0;
+  const priceEmpaque = parseFloat(document.getElementById('price-empaque').value) || 0;
+  const horasLote    = parseFloat(document.getElementById('horas-lote').value) || 0;
+  const valorHora    = parseFloat(document.getElementById('valor-hora').value) || 0;
+  const pctFijos     = parseFloat(document.getElementById('pct-fijos').value) / 100 || 0.12;
+  const pctVar       = parseFloat(document.getElementById('pct-var').value) / 100 || 0.10;
+
+  // ── INGREDIENTES (cálculo proporcional correcto) ───────────
+  // Base de glicerina: precio/kg → costo proporcional a gramos usados
+  const costBaseG    = priceBase / 1000;
+  const costBaseLote = totalGrams * costBaseG;
+
+  // Esencia: (gramos usados ÷ tamaño del frasco en ml) × precio del frasco
+  const esenciaG     = parseFloat(document.getElementById('sl-esencia').value) || 2;
+  const costEsenciaLote = sizeEsencia > 0 ? (esenciaG / sizeEsencia) * priceEsencia : 0;
+
+  // Aceite: (gramos usados ÷ tamaño de la botella en ml) × precio de la botella
+  const aceiteG      = parseFloat(document.getElementById('sl-aceite').value) || 1;
+  const costAceiteLote = sizeAceite > 0 ? (aceiteG / sizeAceite) * priceAceite : 0;
+
+  // Aditivos: costo directo del lote (ya es total)
+  const costAditivosLote = priceAditivos;
+
+  // Empaque: costo por jabón × cantidad
+  const costEmpaqueLote = priceEmpaque * qty;
+
+  const costIngLote  = costBaseLote + costEsenciaLote + costAceiteLote
+                     + costAditivosLote + costEmpaqueLote;
+  const costIngJabon = qty > 0 ? costIngLote / qty : 0;
+
+  // ── MANO DE OBRA ──────────────────────────────────────────
+  const costMOLote   = horasLote * valorHora;
+  const costMOJabon  = qty > 0 ? costMOLote / qty : 0;
+
+  // ── COSTOS FIJOS (% sobre ingredientes) ───────────────────
+  const costFijosLote  = costIngLote * pctFijos;
+  const costFijosJabon = qty > 0 ? costFijosLote / qty : 0;
+
+  // ── COSTOS VARIABLES (% sobre ingredientes) ───────────────
+  const costVarLote    = costIngLote * pctVar;
+  const costVarJabon   = qty > 0 ? costVarLote / qty : 0;
+
+  // ── TOTALES ───────────────────────────────────────────────
+  const costTotalJabon = costIngJabon + costMOJabon + costFijosJabon + costVarJabon;
+  const costTotalLote  = costTotalJabon * qty;
+  const precioMin      = costTotalJabon / (1 - 0.40);
+  const precioIdeal    = costTotalJabon / (1 - 0.65);
+  const precioPremium  = costTotalJabon / (1 - 0.85);
+  const gananciaIdeal  = precioIdeal - costTotalJabon;
+  const roiLote        = costTotalLote > 0 ? (gananciaIdeal * qty / costTotalLote * 100) : 0;
+
+  // Guardar para otras pestañas
+  lastCostJabon   = costTotalJabon;
+  lastPrecioIdeal = precioIdeal;
+  lastGanancia    = gananciaIdeal;
+
+  // ── UPDATE DOM ────────────────────────────────────────────
+  document.getElementById('costo-jabon').textContent    = '$' + costTotalJabon.toFixed(2);
+  document.getElementById('costo-lote').textContent     = 'Lote (' + qty + ' jabones): $' + costTotalLote.toFixed(2);
+  document.getElementById('precio-min').textContent     = '$' + precioMin.toFixed(2);
+  document.getElementById('precio-ideal').textContent   = '$' + precioIdeal.toFixed(2);
+  document.getElementById('precio-premium').textContent = '$' + precioPremium.toFixed(2);
+  document.getElementById('kd-ganancia').textContent    = '$' + gananciaIdeal.toFixed(2);
+  document.getElementById('kd-margen').textContent      = '65%';
+  document.getElementById('kd-mes50').textContent       = '$' + (gananciaIdeal * 50).toFixed(0);
+  document.getElementById('kd-roi').textContent         = roiLote.toFixed(0) + '%';
+
+  // ── PIE CHART ─────────────────────────────────────────────
+  const totalC = costIngJabon + costMOJabon + costFijosJabon + costVarJabon;
+  const pIng   = totalC > 0 ? costIngJabon    / totalC * 100 : 25;
+  const pMO    = totalC > 0 ? costMOJabon     / totalC * 100 : 25;
+  const pFijos = totalC > 0 ? costFijosJabon  / totalC * 100 : 25;
+  const pVar   = totalC > 0 ? costVarJabon    / totalC * 100 : 25;
+
+  drawPie(
+    [costIngJabon, costMOJabon, costFijosJabon, costVarJabon],
+    ['#3D5A3E','#C97B84','#C5A95A','#7A5C48']
+  );
+  document.getElementById('leg-ing').textContent   = pIng.toFixed(0) + '%';
+  document.getElementById('leg-mo').textContent    = pMO.toFixed(0) + '%';
+  document.getElementById('leg-fijos').textContent = pFijos.toFixed(0) + '%';
+  document.getElementById('leg-var').textContent   = pVar.toFixed(0) + '%';
+
+  // Actualizar simulador con últimos costos
+  const simCosto = document.getElementById('sim-costo');
+  if (simCosto && costTotalJabon > 0) {
+    simCosto.value = costTotalJabon.toFixed(2);
+    runSim();
+  }
+
+  // ── TABLA DESGLOSE ────────────────────────────────────────────
+  updateBreakdown({
+    qty,
+    totalGrams,
+    // Base
+    costBaseLote, costIngJabon,
+    // Esencia
+    esenciaG, sizeEsencia, priceEsencia, costEsenciaLote,
+    // Aceite
+    aceiteG, sizeAceite, priceAceite, costAceiteLote,
+    // Aditivos
+    priceAditivos, costAditivosLote,
+    // Empaque
+    priceEmpaque, costEmpaqueLote,
+    costIngLote,
+    // MO
+    horasLote, valorHora, costMOLote, costMOJabon,
+    // Fijos
+    pctFijos, costFijosLote, costFijosJabon,
+    // Variables
+    pctVar, costVarLote, costVarJabon,
+    // Totales
+    costTotalJabon, costTotalLote,
+    precioIdeal, gananciaIdeal
+  });
+}
+
+// ── BREAKDOWN TABLE ───────────────────────────────────────────────
+function updateBreakdown(d) {
+  const tbody = document.getElementById('bd-tbody');
+  const note  = document.getElementById('bd-note');
+  if (!tbody) return;
+
+  const fmt = (n) => '$' + (n||0).toFixed(3);
+  const fmtL = (n) => '$' + (n||0).toFixed(2);
+  const pctStr = (n) => (n*100).toFixed(0) + '%';
+
+  tbody.innerHTML = [
+    // ── INGREDIENTES ──────────────────────────────────────────
+    `<tr class="section-row"><td colspan="4">🌿 INGREDIENTES</td></tr>`,
+
+    `<tr>
+      <td>Base de glicerina
+        <span class="formula-chip">${d.totalGrams}g ÷ 1000 × $${d.costBaseLote > 0 ? (d.costBaseLote/d.totalGrams*1000).toFixed(2) : '—'}/kg</span>
+      </td>
+      <td>= ${d.totalGrams} g × (precio/1000g)</td>
+      <td>${fmtL(d.costBaseLote)}</td>
+      <td>${fmt(d.costBaseLote / d.qty)}</td>
+    </tr>`,
+
+    `<tr>
+      <td>Esencia aromática
+        <span class="formula-chip">${d.esenciaG}g ÷ ${d.sizeEsencia}ml × $${d.priceEsencia}</span>
+      </td>
+      <td>= (${d.esenciaG}g usados / ${d.sizeEsencia}ml frasco)</td>
+      <td>${fmtL(d.costEsenciaLote)}</td>
+      <td>${fmt(d.costEsenciaLote / d.qty)}</td>
+    </tr>`,
+
+    `<tr>
+      <td>Aceite vegetal
+        <span class="formula-chip">${d.aceiteG}g ÷ ${d.sizeAceite}ml × $${d.priceAceite}</span>
+      </td>
+      <td>= (${d.aceiteG}g usados / ${d.sizeAceite}ml botella)</td>
+      <td>${fmtL(d.costAceiteLote)}</td>
+      <td>${fmt(d.costAceiteLote / d.qty)}</td>
+    </tr>`,
+
+    `<tr>
+      <td>Aditivos del lote
+        <span class="formula-chip">costo directo</span>
+      </td>
+      <td>= Ingresado directamente</td>
+      <td>${fmtL(d.costAditivosLote)}</td>
+      <td>${fmt(d.costAditivosLote / d.qty)}</td>
+    </tr>`,
+
+    `<tr>
+      <td>Empaque + etiqueta
+        <span class="formula-chip">$${d.priceEmpaque} × ${d.qty} uds</span>
+      </td>
+      <td>= Precio por unidad × cantidad</td>
+      <td>${fmtL(d.costEmpaqueLote)}</td>
+      <td>${fmt(d.priceEmpaque)}</td>
+    </tr>`,
+
+    `<tr class="subtotal-row">
+      <td>Subtotal ingredientes</td>
+      <td></td>
+      <td>${fmtL(d.costIngLote)}</td>
+      <td>${fmt(d.costIngLote / d.qty)}</td>
+    </tr>`,
+
+    // ── MANO DE OBRA ──────────────────────────────────────────
+    `<tr class="section-row"><td colspan="4">👐 MANO DE OBRA</td></tr>`,
+    `<tr>
+      <td>Trabajo de producción
+        <span class="formula-chip">${d.horasLote}h × $${d.valorHora}/h</span>
+      </td>
+      <td>= Horas trabajadas × valor hora</td>
+      <td>${fmtL(d.costMOLote)}</td>
+      <td>${fmt(d.costMOJabon)}</td>
+    </tr>`,
+
+    // ── COSTOS FIJOS ──────────────────────────────────────────
+    `<tr class="section-row"><td colspan="4">🏠 COSTOS FIJOS</td></tr>`,
+    `<tr>
+      <td>Luz, agua, espacio, internet
+        <span class="formula-chip">${pctStr(d.pctFijos)} × $${d.costIngLote.toFixed(2)}</span>
+      </td>
+      <td>= ${pctStr(d.pctFijos)} sobre ingred.</td>
+      <td>${fmtL(d.costFijosLote)}</td>
+      <td>${fmt(d.costFijosJabon)}</td>
+    </tr>`,
+
+    // ── COSTOS VARIABLES ──────────────────────────────────────
+    `<tr class="section-row"><td colspan="4">📦 COSTOS VARIABLES</td></tr>`,
+    `<tr>
+      <td>Bolsas, limpieza, consumibles
+        <span class="formula-chip">${pctStr(d.pctVar)} × $${d.costIngLote.toFixed(2)}</span>
+      </td>
+      <td>= ${pctStr(d.pctVar)} sobre ingred.</td>
+      <td>${fmtL(d.costVarLote)}</td>
+      <td>${fmt(d.costVarJabon)}</td>
+    </tr>`,
+
+    // ── TOTAL ─────────────────────────────────────────────────
+    `<tr class="total-row">
+      <td>💰 COSTO TOTAL REAL</td>
+      <td style="font-size:.72rem;opacity:.8">Suma de todos los componentes</td>
+      <td>${fmtL(d.costTotalLote)} <span style="font-size:.65rem;opacity:.75">(${d.qty} uds)</span></td>
+      <td>${fmtL(d.costTotalJabon)} / ud</td>
+    </tr>`,
+
+    // ── PRECIO Y GANANCIA ─────────────────────────────────────
+    `<tr style="background:var(--ok-l)">
+      <td style="color:var(--ok);font-weight:700">✅ Precio ideal (65% margen)</td>
+      <td style="font-size:.75rem;color:var(--brown-m)">Costo ÷ (1 − 0.65)</td>
+      <td style="font-weight:700;color:var(--ok)">${fmtL(d.precioIdeal * d.qty)}</td>
+      <td style="font-weight:700;color:var(--ok)">${fmtL(d.precioIdeal)}</td>
+    </tr>`,
+    `<tr style="background:var(--lgg)">
+      <td style="color:var(--dg);font-weight:700">🎯 Ganancia neta por jabón</td>
+      <td style="font-size:.75rem;color:var(--brown-m)">Precio ideal − Costo total</td>
+      <td style="font-weight:700;color:var(--dg)">${fmtL(d.gananciaIdeal * d.qty)}</td>
+      <td style="font-weight:700;color:var(--dg)">${fmtL(d.gananciaIdeal)}</td>
+    </tr>`,
+
+  ].join('');
+
+  // Update the explanatory note
+  note.innerHTML =
+    '<strong>¿Cómo se calcula la esencia y el aceite?</strong> ' +
+    'Se usa la fracción real del envase: si tienes un frasco de ' + d.sizeEsencia + ' ml a $' + d.priceEsencia +
+    ' y usaste ' + d.esenciaG + 'g, el costo proporcional es ' +
+    '<span class="formula-chip">(' + d.esenciaG + '/' + d.sizeEsencia + ') × $' + d.priceEsencia + ' = $' +
+    (d.esenciaG/d.sizeEsencia * d.priceEsencia).toFixed(3) + '</span>. ' +
+    'Los costos fijos (' + pctStr(d.pctFijos) + ') y variables (' + pctStr(d.pctVar) + ') ' +
+    'se aplican como porcentaje sobre el total de ingredientes ($' + d.costIngLote.toFixed(2) + ').';
+}
+
+// ── FICHA DEL PRODUCTO ───────────────────────────────────────
+function previewFicha() {
+  const nombre   = document.getElementById('ficha-nombre').value || 'Mi Jabón Artesanal';
+  const ing1     = document.getElementById('ficha-ing1').value;
+  const ing2     = document.getElementById('ficha-ing2').value;
+  const ing3     = document.getElementById('ficha-ing3').value;
+  const ing4     = document.getElementById('ficha-ing4').value;
+  const costo    = parseFloat(document.getElementById('ficha-costo').value) || lastCostJabon || 0;
+  const precio   = parseFloat(document.getElementById('ficha-precio').value) || lastPrecioIdeal || 0;
+  const ganancia = precio - costo;
+  const peso     = document.getElementById('ficha-peso').value || '100';
+  const benef    = document.getElementById('ficha-beneficio').value || 'Cuida y nutre tu piel naturalmente';
+  const uso      = document.getElementById('ficha-uso').value || 'Aplicar en piel húmeda, masajear y enjuagar';
+
+  document.getElementById('fp-nombre').textContent = '🧼 ' + nombre;
+  document.getElementById('fp-peso').textContent   = 'Peso neto: ' + peso + ' g · 100% Natural · Hecho a mano';
+  document.getElementById('fp-costo').textContent  = '$' + costo.toFixed(2);
+  document.getElementById('fp-precio').textContent = '$' + precio.toFixed(2);
+  document.getElementById('fp-ganancia').textContent = '$' + ganancia.toFixed(2);
+  const minEl = document.getElementById('fp-min');
+  if (minEl) minEl.textContent = '$' + (costo / (1-0.40)).toFixed(2);
+  document.getElementById('fp-beneficio').textContent = benef;
+  document.getElementById('fp-uso').textContent    = uso;
+
+  // Ingredientes
+  const ings = [ing1, ing2, ing3, ing4].filter(Boolean);
+  const ingHtml = ings.length
+    ? ings.map(i => '✔ ' + i).join('<br>')
+    : '✔ Base de glicerina<br>✔ Ingredientes naturales';
+  document.getElementById('fp-ingredientes').innerHTML = ingHtml;
+
+  // Foto en preview
+  const photoWrap = document.getElementById('fp-photo-wrap');
+  const photoImg  = document.getElementById('fp-photo');
+  if (fichaPhotoB64) {
+    photoImg.src = fichaPhotoB64;
+    photoWrap.style.display = 'block';
+  } else {
+    photoWrap.style.display = 'none';
+  }
+  document.getElementById('ficha-preview').style.display = 'block';
+}
+
+function printFicha() {
+  previewFicha();
+  const nombre   = document.getElementById('ficha-nombre').value || 'Mi Jabón';
+  const ing1     = document.getElementById('ficha-ing1').value;
+  const ing2     = document.getElementById('ficha-ing2').value;
+  const ing3     = document.getElementById('ficha-ing3').value;
+  const ing4     = document.getElementById('ficha-ing4').value;
+  const costo    = parseFloat(document.getElementById('ficha-costo').value) || 0;
+  const precio   = parseFloat(document.getElementById('ficha-precio').value) || 0;
+  const ganancia = (precio - costo).toFixed(2);
+  const peso     = document.getElementById('ficha-peso').value || '100';
+  const benef    = document.getElementById('ficha-beneficio').value || '';
+  const uso      = document.getElementById('ficha-uso').value || '';
+  const ings     = [ing1, ing2, ing3, ing4].filter(Boolean);
+
+  // Foto desde fichaPhotoB64 o desde la receta cargada
+  const fichaFotoHTML = fichaPhotoB64
+    ? `<img src="${fichaPhotoB64}" style="width:100%;max-height:200px;object-fit:cover;border-radius:10px;display:block;margin-bottom:16px" alt="Foto del jabón">`
+    : '';
+
+  const w = window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html><head>
+  <meta charset="UTF-8">
+  <title>Ficha — ${nombre}</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Georgia,Arial,sans-serif;padding:28px;max-width:480px;background:#FAF6F1}
+    .brand{text-align:center;font-size:11px;color:#5C7A5D;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;padding-bottom:12px;border-bottom:2px solid #3D5A3E}
+    h1{font-family:Georgia,serif;color:#3D5A3E;font-size:22px;text-align:center;margin-bottom:4px;font-weight:700}
+    .sub{text-align:center;font-size:11px;color:#7A5C48;margin-bottom:16px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+    .section-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#5C7A5D;margin-bottom:6px;background:#D6EAD7;padding:4px 8px;border-radius:4px}
+    .ing-item{font-size:12px;color:#4A3728;line-height:1.7;margin-top:6px}
+    .price-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;background:#D6EAD7;border-radius:10px;padding:12px;margin-bottom:14px;text-align:center}
+    .p-label{font-size:9px;color:#5C7A5D;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:3px}
+    .p-val{font-family:Georgia,serif;font-size:15px;font-weight:700}
+    .p-costo{color:#3D5A3E} .p-min{color:#7A5C48} .p-ideal{color:#C97B84} .p-gan{color:#27AE60}
+    .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;text-align:center}
+    .kpi-box{background:#fff;border:1px solid #D6EAD7;border-radius:8px;padding:8px}
+    .kpi-v{font-family:Georgia,serif;font-size:14px;font-weight:700;color:#3D5A3E}
+    .kpi-l{font-size:9px;color:#7A5C48;text-transform:uppercase;letter-spacing:.05em}
+    .footer{text-align:center;font-size:9px;color:#aaa;border-top:1px solid #ddd;padding-top:10px;margin-top:6px}
+    .benef-text{font-size:12px;color:#4A3728;font-style:italic;line-height:1.55;margin-top:6px}
+    .uso-text{font-size:11px;color:#7A5C48;line-height:1.5;margin-top:6px}
+    @media print{body{background:white;padding:16px}}
+  </style></head><body>
+  <div class="brand">🌿 Belleza Emprendedora · IMEmprende</div>
+  ${fichaFotoHTML}
+  <h1>🧼 ${nombre}</h1>
+  <div class="sub">Peso neto: ${peso} g · 100% Natural · Hecho a mano con amor</div>
+  <div class="grid">
+    <div>
+      <div class="section-title">✅ Ingredientes</div>
+      <div class="ing-item">${ings.map(i=>'✔ '+i).join('<br>') || '✔ Ingredientes naturales'}</div>
+    </div>
+    <div>
+      <div class="section-title">🌟 Beneficios</div>
+      <div class="benef-text">${benef || 'Natural, artesanal y hecho con amor'}</div>
+      <div class="section-title" style="margin-top:10px">💧 Modo de uso</div>
+      <div class="uso-text">${uso || 'Aplicar en piel húmeda, masajear y enjuagar'}</div>
+    </div>
+  </div>
+  <div class="section-title" style="margin-bottom:8px">💰 Costos y precios recomendados</div>
+  <div class="price-grid">
+    <div><span class="p-label">Costo real</span><span class="p-val p-costo">$${costo.toFixed(2)}</span></div>
+    <div><span class="p-label">Mínimo 40%</span><span class="p-val p-min">$${(costo/(1-0.40)).toFixed(2)}</span></div>
+    <div><span class="p-label">Ideal 65% ✅</span><span class="p-val p-ideal">$${precio.toFixed(2)}</span></div>
+    <div><span class="p-label">Ganancia</span><span class="p-val p-gan">$${ganancia}</span></div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi-box"><div class="kpi-v">$${ganancia}</div><div class="kpi-l">Ganancia/jabón</div></div>
+    <div class="kpi-box"><div class="kpi-v">65%</div><div class="kpi-l">Margen neto</div></div>
+    <div class="kpi-box"><div class="kpi-v">$${(parseFloat(ganancia)*50).toFixed(0)}</div><div class="kpi-l">50 jabones/mes</div></div>
+  </div>
+  <div class="footer">Jabones Artesanales: Crea tu Marca Natural · Belleza Emprendedora · IMEmprende</div>
+  </body></html>`);
+  w.document.close();
+  w.onload = function() { setTimeout(()=>{ w.focus(); w.print(); }, 200); };
+  setTimeout(()=>{ w.focus(); w.print(); }, 1200);
+}
+
+// ── SIMULADOR DE INGRESOS ─────────────────────────────────────
+function runSim() {
+  const precio = parseFloat(document.getElementById('sim-precio').value) || 6;
+  const costo  = parseFloat(document.getElementById('sim-costo').value) || 2;
+  const meta   = parseFloat(document.getElementById('sim-meta').value) || 300;
+  const slQty  = parseInt(document.getElementById('sim-slider').value) || 100;
+  const ganUnit = precio - costo;
+  document.getElementById('sim-slider-val').textContent = slQty;
+
+  // Custom result
+  document.getElementById('sc-ventas').textContent  = '$' + (precio * slQty).toFixed(0);
+  document.getElementById('sc-costo').textContent   = '$' + (costo  * slQty).toFixed(0);
+  document.getElementById('sc-ganancia').textContent= '$' + (ganUnit * slQty).toFixed(0);
+
+  // Meta calculation
+  const necesarios = ganUnit > 0 ? Math.ceil(meta / ganUnit) : 0;
+  document.getElementById('sim-jabones-meta').textContent = necesarios;
+
+  // Motivación
+  const motivaciones = [
+    '¡Menos de ' + necesarios + ' jabones para alcanzar tu meta! Tú puedes. 💚',
+    '¡' + necesarios + ' jabones al mes es completamente alcanzable empezando desde casa!',
+    'Con solo ' + Math.ceil(necesarios/4) + ' jabones por semana llegas a tu meta mensual. 🧼',
+    'Eso es ' + (necesarios * 12).toFixed(0) + ' jabones al año — ¡un negocio real! 🚀',
+  ];
+  document.getElementById('sim-motivacion').textContent =
+    motivaciones[Math.floor(Math.random() * motivaciones.length)];
+
+  // Scenarios
+  const scenarios = [
+    { qty:50,  label:'Inicio tranquilo',  emoji:'🌱' },
+    { qty:100, label:'Crecimiento',        emoji:'📈' },
+    { qty:200, label:'Negocio en marcha',  emoji:'🚀' },
+    { qty:300, label:'Meta avanzada',      emoji:'⭐' },
+  ];
+  const scDiv = document.getElementById('sim-scenarios');
+  scDiv.innerHTML = scenarios.map(s => {
+    const ventas  = precio * s.qty;
+    const costos  = costo  * s.qty;
+    const gan     = ganUnit * s.qty;
+    const margen  = ventas > 0 ? (gan/ventas*100).toFixed(0) : 0;
+    const isMeta  = gan >= meta;
+    return `<div style="background:${isMeta ? 'var(--ok-l)' : 'var(--cream)'};
+      border:1.5px solid ${isMeta ? 'var(--ok)' : 'var(--cream2)'};
+      border-radius:12px;padding:12px 14px;
+      display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center">
+      <div style="font-size:1.5rem">${s.emoji}</div>
+      <div>
+        <div style="font-size:.82rem;font-weight:700;color:var(--dg)">${s.label} — ${s.qty} jabones/mes</div>
+        <div style="font-size:.72rem;color:var(--brown-m)">Ventas $${ventas.toFixed(0)} · Costos $${costos.toFixed(0)} · Margen ${margen}%</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:1.2rem;font-weight:700;color:${isMeta ? 'var(--ok)' : 'var(--dg)'};font-family:'Playfair Display',serif">$${gan.toFixed(0)}</div>
+        <div style="font-size:.62rem;color:var(--brown-m)">ganancia</div>
+        ${isMeta ? '<div style="font-size:.65rem;font-weight:700;color:var(--ok)">✓ META LOGRADA</div>' : ''}
+      </div>
+    </div>`;
+  }).join('');
+
+  // Tabla
+  const tbody = document.querySelector('#sim-table tbody');
+  const rows = [25, 50, 75, 100, 150, 200, 300, 500];
+  tbody.innerHTML = rows.map((q,i) => {
+    const v = precio*q, c = costo*q, g = ganUnit*q, m = v>0?(g/v*100).toFixed(0):0;
+    return `<tr style="${i%2===0 ? 'background:var(--cream)' : ''}">
+      <td><strong>${q}</strong></td>
+      <td>$${v.toFixed(0)}</td>
+      <td>$${c.toFixed(0)}</td>
+      <td style="font-weight:700;color:var(--ok)">$${g.toFixed(0)}</td>
+      <td>${m}%</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── RECIPES ──────────────────────────────
+// ── Photo state ──────────────────────────────────────────────
+let fichaPhotoB64 = null;
+let recipePhotoB64 = null;
+
+function loadFichaPhoto(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    fichaPhotoB64 = e.target.result;
+    document.getElementById('ficha-photo-placeholder').style.display = 'none';
+    document.getElementById('ficha-photo-preview').style.display = 'block';
+    document.getElementById('ficha-photo-img').src = fichaPhotoB64;
+    previewFicha();
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeFichaPhoto(e) {
+  e.stopPropagation();
+  fichaPhotoB64 = null;
+  document.getElementById('ficha-photo-placeholder').style.display = 'block';
+  document.getElementById('ficha-photo-preview').style.display = 'none';
+  document.getElementById('fp-photo-wrap').style.display = 'none';
+}
+
+function loadRecipePhoto(input) {
+  const file = input.files[0];
+  if (!file) return;
+  // Resize to max 400px to save localStorage space
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const MAX = 400;
+      let w = img.width, h = img.height;
+      if (w > MAX) { h = h * MAX / w; w = MAX; }
+      if (h > MAX) { w = w * MAX / h; h = MAX; }
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      recipePhotoB64 = canvas.toDataURL('image/jpeg', 0.75);
+      document.getElementById('rec-photo-placeholder').style.display = 'none';
+      document.getElementById('rec-photo-preview').style.display = 'block';
+      document.getElementById('rec-photo-img').src = recipePhotoB64;
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeRecipePhoto(e) {
+  e.stopPropagation();
+  recipePhotoB64 = null;
+  document.getElementById('rec-photo-placeholder').style.display = 'block';
+  document.getElementById('rec-photo-preview').style.display = 'none';
+}
+
+function saveRecipe() {
+  // Tomar nombre desde campo del Paso 5 en Calcular
+  const nombrePaso5 = (document.getElementById('nombre-receta') || {}).value || '';
+  const name = nombrePaso5.trim() || ('Receta ' + new Date().toLocaleDateString('es'));
+
+  // Capturar todos los datos del cálculo actual
+  const recipe = {
+    id: Date.now(),
+    name,
+    date: new Date().toLocaleDateString('es', { day:'2-digit', month:'short', year:'numeric' }),
+    grams: totalGrams,
+    esencia: parseFloat(document.getElementById('sl-esencia').value),
+    aceite: parseFloat(document.getElementById('sl-aceite').value),
+    color: parseFloat(document.getElementById('sl-color').value),
+    costoJabon: document.getElementById('costo-jabon').textContent,
+    precioIdeal: document.getElementById('precio-ideal').textContent,
+    precioMin: document.getElementById('precio-min').textContent,
+    precioPremium: document.getElementById('precio-premium').textContent,
+    ganancia: document.getElementById('kd-ganancia').textContent,
+    qty: document.getElementById('qty-jabones').value,
+    // Ingredientes detalle
+    sizeEsencia: document.getElementById('size-esencia').value,
+    sizeAceite: document.getElementById('size-aceite').value,
+    priceBase: document.getElementById('price-base').value,
+    priceEsencia: document.getElementById('price-esencia').value,
+    priceAceite: document.getElementById('price-aceite').value,
+    priceAditivos: document.getElementById('price-aditivos').value,
+    priceEmpaque: document.getElementById('price-empaque').value,
+    // Mano de obra y overhead
+    horasLote: document.getElementById('horas-lote').value,
+    valorHora: document.getElementById('valor-hora').value,
+    pctFijos: document.getElementById('pct-fijos').value,
+    pctVar: document.getElementById('pct-var').value,
+    photo: recipePhotoB64 || null,
+  };
+
+  const recipes = getRecipes();
+  recipes.unshift(recipe);
+  try {
+    localStorage.setItem('jabones_recipes', JSON.stringify(recipes));
+  } catch(e) {
+    // localStorage full — save without photo
+    recipe.photo = null;
+    recipes[0] = recipe;
+    localStorage.setItem('jabones_recipes', JSON.stringify(recipes));
+    showToast('⚠ Foto no guardada — espacio lleno. Receta guardada sin foto.');
+    document.getElementById('recipe-name').value = '';
+    renderRecipes();
+    return;
+  }
+  document.getElementById('recipe-name').value = '';
+  // Reset photo
+  recipePhotoB64 = null;
+  document.getElementById('rec-photo-placeholder').style.display = 'block';
+  document.getElementById('rec-photo-preview').style.display = 'none';
+  showToast('✅ Receta guardada correctamente');
+  renderRecipes();
+}
+
+function getRecipes() {
+  try { return JSON.parse(localStorage.getItem('jabones_recipes') || '[]'); }
+  catch { return []; }
+}
+
+function deleteRecipe(id) {
+  const recipes = getRecipes().filter(r => r.id !== id);
+  localStorage.setItem('jabones_recipes', JSON.stringify(recipes));
+  renderRecipes();
+  showToast('Receta eliminada');
+}
+
+function loadRecipe(id) {
+  const recipe = getRecipes().find(r => r.id === id);
+  if (!recipe) return;
+  document.getElementById('base-amount').value = recipe.grams;
+  document.getElementById('base-unit').value = 'g';
+  document.getElementById('sl-esencia').value = recipe.esencia;
+  document.getElementById('sl-aceite').value = recipe.aceite;
+  document.getElementById('sl-color').value = recipe.color;
+  recalc();
+  switchTab('calc', document.querySelectorAll('.tab-btn')[0]);
+  showToast('✅ Receta cargada en la calculadora');
+}
+
+function renderRecipes() {
+  const container = document.getElementById('recipes-container');
+  const recipes = getRecipes();
+  if (!recipes.length) {
+    container.innerHTML = '<div class="empty-state"><div class="icon">📒</div><p>Todavía no tienes recetas guardadas.<br>Usa la calculadora y luego guarda tu receta aquí.</p></div>';
+    return;
+  }
+  container.innerHTML = '<div class="recipes-list">' + recipes.map(r => `
+    <div class="recipe-card">
+      ${r.photo
+        ? `<img src="${r.photo}" class="recipe-card-photo" alt="${r.name}">`
+        : `<div class="recipe-card-photo-placeholder">🧼</div>`
+      }
+      <div style="padding:12px 14px">
+        <div class="recipe-card-header">
+          <div class="recipe-card-name">${r.name}</div>
+          <div class="recipe-card-date">${r.date}</div>
+        </div>
+        <div class="recipe-card-body">
+          <div class="rc-stat"><div class="rc-stat-val">${r.grams} g</div><div class="rc-stat-lbl">Base</div></div>
+          <div class="rc-stat"><div class="rc-stat-val">${r.costoJabon}</div><div class="rc-stat-lbl">Costo/jabón</div></div>
+          <div class="rc-stat"><div class="rc-stat-val">${r.precioIdeal}</div><div class="rc-stat-lbl">Precio ideal</div></div>
+        </div>
+        <div class="recipe-actions">
+          <button class="btn-action btn-load" onclick="loadRecipe(${r.id})">⬆ Cargar</button>
+          <button class="btn-action btn-print" onclick="printSingle(${r.id})">🖨 Imprimir</button>
+          <button class="btn-action btn-del" onclick="deleteRecipe(${r.id})">🗑 Borrar</button>
+        </div>
+      </div>
+    </div>`).join('') + '</div>';
+}
+
+
+function buildBreakdownHTML(r) {
+  // Recalculate costs proportionally from stored data
+  const grams      = parseFloat(r.grams) || 0;
+  const qty        = parseInt(r.qty) || 1;
+  const priceBase  = parseFloat(r.priceBase) || 0;
+  const esenciaG   = parseFloat(r.esencia) || 0;
+  const sizeEs     = parseFloat(r.sizeEsencia) || 30;
+  const priceEs    = parseFloat(r.priceEsencia) || 0;
+  const aceiteG    = parseFloat(r.aceite) || 0;
+  const sizeAc     = parseFloat(r.sizeAceite) || 100;
+  const priceAc    = parseFloat(r.priceAceite) || 0;
+  const priceAdit  = parseFloat(r.priceAditivos) || 0;
+  const priceEmp   = parseFloat(r.priceEmpaque) || 0;
+  const horas      = parseFloat(r.horasLote) || 0;
+  const valorH     = parseFloat(r.valorHora) || 0;
+  const pctFijos   = parseFloat(r.pctFijos) / 100 || 0.12;
+  const pctVar     = parseFloat(r.pctVar) / 100 || 0.10;
+
+  // INGREDIENTES
+  const cBase   = (grams * priceBase / 1000);
+  const cEsen   = sizeEs > 0 ? (esenciaG / sizeEs) * priceEs : 0;
+  const cAceit  = sizeAc > 0 ? (aceiteG  / sizeAc) * priceAc  : 0;
+  const cAdit   = priceAdit;
+  const cEmp    = priceEmp * qty;
+  const cIngLot = cBase + cEsen + cAceit + cAdit + cEmp;
+  const cIngUn  = cIngLot / qty;
+
+  // MO, FIJOS, VARIABLES
+  const cMOLot  = horas * valorH;
+  const cMOUn   = cMOLot / qty;
+  const cFijLot = cIngLot * pctFijos;
+  const cFijUn  = cFijLot / qty;
+  const cVarLot = cIngLot * pctVar;
+  const cVarUn  = cVarLot / qty;
+
+  const cTotLot = cIngLot + cMOLot + cFijLot + cVarLot;
+  const cTotUn  = cTotLot / qty;
+  const pMin    = cTotUn / (1 - 0.40);
+  const pIdeal  = cTotUn / (1 - 0.65);
+  const pPrem   = cTotUn / (1 - 0.85);
+  const ganUn   = pIdeal - cTotUn;
+
+  const f = (n) => '$' + (n||0).toFixed(3);
+  const fL = (n) => '$' + (n||0).toFixed(2);
+  const pStr = (n) => (n*100).toFixed(0) + '%';
+
+  // Pie chart percentages for legend
+  const pIng  = cTotUn > 0 ? (cIngUn / cTotUn * 100).toFixed(0) : 0;
+  const pMO   = cTotUn > 0 ? (cMOUn  / cTotUn * 100).toFixed(0) : 0;
+  const pFij  = cTotUn > 0 ? (cFijUn / cTotUn * 100).toFixed(0) : 0;
+  const pVar2 = cTotUn > 0 ? (cVarUn / cTotUn * 100).toFixed(0) : 0;
+
+  return {
+    table: `
+      <div class="sec-title">🌿 Desglose completo de costos</div>
+      <table>
+        <tr><th>Componente</th><th>Fórmula</th><th class="right">Lote</th><th class="right">Por jabón</th></tr>
+        <tr class="section-row"><td colspan="4">🌿 INGREDIENTES</td></tr>
+        <tr>
+          <td>Base de glicerina</td>
+          <td><span class="chip">${grams}g ÷ 1000 × $${priceBase}/kg</span></td>
+          <td class="right">${fL(cBase)}</td><td class="right">${f(cBase/qty)}</td>
+        </tr>
+        <tr>
+          <td>Esencia aromática</td>
+          <td><span class="chip">${esenciaG}g ÷ ${sizeEs}ml × $${priceEs}</span></td>
+          <td class="right">${fL(cEsen)}</td><td class="right">${f(cEsen/qty)}</td>
+        </tr>
+        <tr>
+          <td>Aceite vegetal</td>
+          <td><span class="chip">${aceiteG}g ÷ ${sizeAc}ml × $${priceAc}</span></td>
+          <td class="right">${fL(cAceit)}</td><td class="right">${f(cAceit/qty)}</td>
+        </tr>
+        <tr>
+          <td>Aditivos del lote</td>
+          <td><span class="chip">costo directo</span></td>
+          <td class="right">${fL(cAdit)}</td><td class="right">${f(cAdit/qty)}</td>
+        </tr>
+        <tr>
+          <td>Empaque + etiqueta</td>
+          <td><span class="chip">$${priceEmp} × ${qty} uds</span></td>
+          <td class="right">${fL(cEmp)}</td><td class="right">${f(priceEmp)}</td>
+        </tr>
+        <tr class="subtotal">
+          <td colspan="2"><strong>Subtotal ingredientes (${pIng}%)</strong></td>
+          <td class="right">${fL(cIngLot)}</td><td class="right">${f(cIngUn)}</td>
+        </tr>
+        <tr class="section-row"><td colspan="4">👐 MANO DE OBRA</td></tr>
+        <tr>
+          <td>Trabajo de producción</td>
+          <td><span class="chip">${horas}h × $${valorH}/h (${pMO}%)</span></td>
+          <td class="right">${fL(cMOLot)}</td><td class="right">${f(cMOUn)}</td>
+        </tr>
+        <tr class="section-row"><td colspan="4">🏠 COSTOS FIJOS</td></tr>
+        <tr>
+          <td>Luz, agua, espacio, internet</td>
+          <td><span class="chip">${pStr(pctFijos)} × ingred. (${pFij}%)</span></td>
+          <td class="right">${fL(cFijLot)}</td><td class="right">${f(cFijUn)}</td>
+        </tr>
+        <tr class="section-row"><td colspan="4">📦 COSTOS VARIABLES</td></tr>
+        <tr>
+          <td>Bolsas, limpieza, consumibles</td>
+          <td><span class="chip">${pStr(pctVar)} × ingred. (${pVar2}%)</span></td>
+          <td class="right">${fL(cVarLot)}</td><td class="right">${f(cVarUn)}</td>
+        </tr>
+        <tr class="total">
+          <td colspan="2">💰 COSTO TOTAL REAL — ${qty} jabones de ${grams}g</td>
+          <td class="right">${fL(cTotLot)}</td>
+          <td class="right total">${fL(cTotUn)}</td>
+        </tr>
+        <tr class="price-row">
+          <td colspan="2">✅ Precio ideal (65% margen) — Costo ÷ (1−0.65)</td>
+          <td class="right">${fL(pIdeal*qty)}</td><td class="right">${fL(pIdeal)}</td>
+        </tr>
+        <tr class="gain-row">
+          <td colspan="2">🎯 Ganancia neta por jabón — Precio − Costo</td>
+          <td class="right">${fL(ganUn*qty)}</td><td class="right">${fL(ganUn)}</td>
+        </tr>
+      </table>`,
+    prices: { pMin, pIdeal, pPrem, cTotUn, ganUn, cTotLot },
+    priceGrid: `
+      <div class="sec-title">💰 Precios recomendados</div>
+      <div class="price-grid">
+        <div class="price-box">
+          <label>Costo real</label>
+          <div class="val">$${cTotUn.toFixed(2)}</div>
+        </div>
+        <div class="price-box">
+          <label>Mínimo 40%</label>
+          <div class="val" style="color:#C97B84">$${pMin.toFixed(2)}</div>
+        </div>
+        <div class="price-box ideal">
+          <label>Ideal 65% ✅</label>
+          <div class="val">$${pIdeal.toFixed(2)}</div>
+        </div>
+        <div class="price-box">
+          <label>Premium 85%</label>
+          <div class="val" style="color:#5C7A5D">$${pPrem.toFixed(2)}</div>
+        </div>
+      </div>
+      <div class="kpi-strip">
+        <div class="kpi-box"><div class="kv">$${ganUn.toFixed(2)}</div><div class="kl">Ganancia/jabón</div></div>
+        <div class="kpi-box"><div class="kv">65%</div><div class="kl">Margen neto</div></div>
+        <div class="kpi-box"><div class="kv">$${(ganUn*50).toFixed(0)}</div><div class="kl">50 jabones/mes</div></div>
+      </div>`,
+  };
+}
+
+function printSingle(id) {
+  const r = getRecipes().find(x => x.id === id);
+  if (!r) return;
+  const bd = buildBreakdownHTML(r);
+  const photoHTML = r.photo
+    ? `<img src="${r.photo}" class="recipe-photo" alt="${r.name}">`
+    : `<div class="recipe-photo-placeholder">🧼</div>`;
+  const w = window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html lang="es"><head>
+  <meta charset="UTF-8">
+  <title>Ficha — ${r.name}</title>
+  <style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Arial,Helvetica,sans-serif;background:#FAF6F1;color:#4A3728;padding:0}
+  .page{max-width:640px;margin:0 auto;padding:24px}
+  /* Header */
+  .doc-header{background:linear-gradient(135deg,#3D5A3E,#5C7A5D);padding:18px 22px;border-radius:12px 12px 0 0;display:flex;align-items:center;gap:14px;margin-bottom:0}
+  .doc-header-icon{font-size:2rem}
+  .doc-header-text h1{font-family:Georgia,serif;color:#fff;font-size:18px;margin-bottom:2px}
+  .doc-header-text p{color:rgba(255,255,255,.7);font-size:11px}
+  /* Recipe card */
+  .recipe-card{background:#fff;border:1.5px solid #E0D8CC;border-radius:0 0 12px 12px;margin-bottom:28px;overflow:hidden;page-break-inside:avoid}
+  .recipe-photo{width:100%;height:200px;object-fit:cover;display:block}
+  .recipe-photo-placeholder{width:100%;height:80px;background:linear-gradient(135deg,#D6EAD7,#C8DEC8);display:flex;align-items:center;justify-content:center;font-size:2rem;color:#5C7A5D}
+  .recipe-body{padding:18px 20px}
+  .recipe-title{font-family:Georgia,serif;color:#3D5A3E;font-size:17px;margin-bottom:2px}
+  .recipe-date{color:#aaa;font-size:11px;margin-bottom:14px}
+  /* Section title */
+  .sec-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#5C7A5D;background:#D6EAD7;padding:5px 10px;border-radius:5px;margin:12px 0 6px}
+  /* Tables */
+  table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:0}
+  th{background:#3D5A3E;color:#fff;padding:6px 10px;text-align:left;font-size:11px;font-weight:600}
+  th.right,td.right{text-align:right}
+  td{padding:6px 10px;border-bottom:1px solid #F0EBE3;color:#4A3728;vertical-align:top}
+  tr:nth-child(even) td{background:#FAF6F1}
+  tr.section-row td{background:#D6EAD7;font-size:10px;font-weight:700;color:#3D5A3E;text-transform:uppercase;letter-spacing:.07em;padding:4px 10px}
+  tr.subtotal td{background:#E8F5E9;font-weight:700;color:#3D5A3E}
+  tr.total td{background:#1B3A1C;color:#fff;font-weight:700;font-size:13px}
+  tr.total td.right{color:#F5C842}
+  tr.price-row td{background:#E8F8EF;color:#27AE60;font-weight:700}
+  tr.gain-row td{background:#D6EAD7;color:#3D5A3E;font-weight:700}
+  /* Price grid */
+  .price-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+  .price-box{background:#D6EAD7;border-radius:8px;padding:8px;text-align:center}
+  .price-box.ideal{background:#3D5A3E}
+  .price-box label{font-size:9px;color:#5C7A5D;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:3px}
+  .price-box.ideal label{color:rgba(255,255,255,.7)}
+  .price-box .val{font-family:Georgia,serif;font-size:16px;font-weight:700;color:#3D5A3E}
+  .price-box.ideal .val{color:#F5C842}
+  /* Formula chip */
+  .chip{display:inline-block;background:#F0E6C0;color:#4A3728;border-radius:4px;padding:1px 5px;font-size:9px;font-family:monospace;margin-left:4px}
+  /* KPI strip */
+  .kpi-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+  .kpi-box{background:#FAF6F1;border:1px solid #E0D8CC;border-radius:8px;padding:8px;text-align:center}
+  .kpi-box .kv{font-family:Georgia,serif;font-size:15px;font-weight:700;color:#3D5A3E}
+  .kpi-box .kl{font-size:9px;color:#7A5C48;text-transform:uppercase;letter-spacing:.05em}
+  /* Footer */
+  .doc-footer{text-align:center;font-size:10px;color:#aaa;border-top:1px solid #ddd;padding-top:10px;margin-top:16px}
+  .doc-footer strong{color:#3D5A3E}
+  @media print{
+    body{background:white}
+    .page{padding:16px}
+    .recipe-card{page-break-inside:avoid}
+  }
+</style>
+  </head><body><div class="page">
+
+  <div class="doc-header">
+    <div class="doc-header-icon">🧼</div>
+    <div class="doc-header-text">
+      <h1>${r.name}</h1>
+      <p>Belleza Emprendedora · IMEmprende · Guardada el ${r.date}</p>
+    </div>
+  </div>
+
+  <div class="recipe-card">
+    ${photoHTML}
+    <div class="recipe-body">
+
+      <div class="sec-title">🌿 Fórmula de ingredientes</div>
+      <table>
+        <tr><th>Ingrediente</th><th>% Fórmula</th><th class="right">Gramos</th></tr>
+        <tr><td>Base de glicerina</td><td>96%</td><td class="right">${(r.grams*.96).toFixed(1)} g</td></tr>
+        <tr><td>Esencia aromática</td><td>~${r.grams>0?((r.esencia/r.grams)*100).toFixed(1):2}%</td><td class="right">${r.esencia} g</td></tr>
+        <tr><td>Aceite vegetal</td><td>~${r.grams>0?((r.aceite/r.grams)*100).toFixed(1):1}%</td><td class="right">${r.aceite} g</td></tr>
+        <tr><td>Colorante / aditivo</td><td>~${r.grams>0?((r.color/r.grams)*100).toFixed(1):1}%</td><td class="right">${r.color} g</td></tr>
+        <tr class="subtotal"><td colspan="2"><strong>Total del lote (${r.qty} jabones)</strong></td><td class="right"><strong>${r.grams} g</strong></td></tr>
+      </table>
+
+      ${bd.table}
+      ${bd.priceGrid}
+
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <strong>Belleza Emprendedora · IMEmprende</strong><br>
+    Jabones Artesanales: Crea tu Marca Natural y Aprende a Vender · Calculadora Interactiva
+  </div>
+
+  </div></body></html>`);
+  w.document.close();
+  w.onload = function() { setTimeout(()=>{ w.focus(); w.print(); }, 200); };
+  setTimeout(()=>{ w.focus(); w.print(); }, 1200);
+}
+
+
+function printRecetario() {
+  const recipes = getRecipes();
+  if (!recipes.length) { showToast('No tienes recetas guardadas aún'); return; }
+  const w = window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html lang="es"><head>
+  <meta charset="UTF-8">
+  <title>Mi Recetario de Jabones Artesanales</title>
+  <style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Arial,Helvetica,sans-serif;background:#FAF6F1;color:#4A3728;padding:0}
+  .page{max-width:640px;margin:0 auto;padding:24px}
+  /* Header */
+  .doc-header{background:linear-gradient(135deg,#3D5A3E,#5C7A5D);padding:18px 22px;border-radius:12px 12px 0 0;display:flex;align-items:center;gap:14px;margin-bottom:0}
+  .doc-header-icon{font-size:2rem}
+  .doc-header-text h1{font-family:Georgia,serif;color:#fff;font-size:18px;margin-bottom:2px}
+  .doc-header-text p{color:rgba(255,255,255,.7);font-size:11px}
+  /* Recipe card */
+  .recipe-card{background:#fff;border:1.5px solid #E0D8CC;border-radius:0 0 12px 12px;margin-bottom:28px;overflow:hidden;page-break-inside:avoid}
+  .recipe-photo{width:100%;height:200px;object-fit:cover;display:block}
+  .recipe-photo-placeholder{width:100%;height:80px;background:linear-gradient(135deg,#D6EAD7,#C8DEC8);display:flex;align-items:center;justify-content:center;font-size:2rem;color:#5C7A5D}
+  .recipe-body{padding:18px 20px}
+  .recipe-title{font-family:Georgia,serif;color:#3D5A3E;font-size:17px;margin-bottom:2px}
+  .recipe-date{color:#aaa;font-size:11px;margin-bottom:14px}
+  /* Section title */
+  .sec-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#5C7A5D;background:#D6EAD7;padding:5px 10px;border-radius:5px;margin:12px 0 6px}
+  /* Tables */
+  table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:0}
+  th{background:#3D5A3E;color:#fff;padding:6px 10px;text-align:left;font-size:11px;font-weight:600}
+  th.right,td.right{text-align:right}
+  td{padding:6px 10px;border-bottom:1px solid #F0EBE3;color:#4A3728;vertical-align:top}
+  tr:nth-child(even) td{background:#FAF6F1}
+  tr.section-row td{background:#D6EAD7;font-size:10px;font-weight:700;color:#3D5A3E;text-transform:uppercase;letter-spacing:.07em;padding:4px 10px}
+  tr.subtotal td{background:#E8F5E9;font-weight:700;color:#3D5A3E}
+  tr.total td{background:#1B3A1C;color:#fff;font-weight:700;font-size:13px}
+  tr.total td.right{color:#F5C842}
+  tr.price-row td{background:#E8F8EF;color:#27AE60;font-weight:700}
+  tr.gain-row td{background:#D6EAD7;color:#3D5A3E;font-weight:700}
+  /* Price grid */
+  .price-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+  .price-box{background:#D6EAD7;border-radius:8px;padding:8px;text-align:center}
+  .price-box.ideal{background:#3D5A3E}
+  .price-box label{font-size:9px;color:#5C7A5D;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:3px}
+  .price-box.ideal label{color:rgba(255,255,255,.7)}
+  .price-box .val{font-family:Georgia,serif;font-size:16px;font-weight:700;color:#3D5A3E}
+  .price-box.ideal .val{color:#F5C842}
+  /* Formula chip */
+  .chip{display:inline-block;background:#F0E6C0;color:#4A3728;border-radius:4px;padding:1px 5px;font-size:9px;font-family:monospace;margin-left:4px}
+  /* KPI strip */
+  .kpi-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+  .kpi-box{background:#FAF6F1;border:1px solid #E0D8CC;border-radius:8px;padding:8px;text-align:center}
+  .kpi-box .kv{font-family:Georgia,serif;font-size:15px;font-weight:700;color:#3D5A3E}
+  .kpi-box .kl{font-size:9px;color:#7A5C48;text-transform:uppercase;letter-spacing:.05em}
+  /* Footer */
+  .doc-footer{text-align:center;font-size:10px;color:#aaa;border-top:1px solid #ddd;padding-top:10px;margin-top:16px}
+  .doc-footer strong{color:#3D5A3E}
+  @media print{
+    body{background:white}
+    .page{padding:16px}
+    .recipe-card{page-break-inside:avoid}
+  }
+</style>
+  </head><body><div class="page">
+
+  <div class="doc-header">
+    <div class="doc-header-icon">📒</div>
+    <div class="doc-header-text">
+      <h1>Mi Recetario de Jabones Artesanales</h1>
+      <p>Belleza Emprendedora · IMEmprende · ${new Date().toLocaleDateString('es',{day:'2-digit',month:'long',year:'numeric'})}</p>
+    </div>
+  </div>
+
+  ${recipes.map((r,idx) => {
+    const bd = buildBreakdownHTML(r);
+    const photoHTML = r.photo
+      ? `<img src="${r.photo}" class="recipe-photo" alt="${r.name}">`
+      : `<div class="recipe-photo-placeholder">🧼</div>`;
+    return `
+    <div class="recipe-card" style="${idx===0?'border-radius:0 0 12px 12px':'border-radius:12px;margin-top:0'}">
+      ${photoHTML}
+      <div class="recipe-body">
+        <div class="recipe-title">🧼 ${r.name}</div>
+        <div class="recipe-date">Guardada el ${r.date} · Lote: ${r.qty} jabones de ${r.grams}g</div>
+
+        <div class="sec-title">🌿 Fórmula de ingredientes</div>
+        <table>
+          <tr><th>Ingrediente</th><th>%</th><th class="right">Gramos</th></tr>
+          <tr><td>Base de glicerina</td><td>96%</td><td class="right">${(r.grams*.96).toFixed(1)}g</td></tr>
+          <tr><td>Esencia aromática</td><td>~${r.grams>0?((r.esencia/r.grams)*100).toFixed(1):2}%</td><td class="right">${r.esencia}g</td></tr>
+          <tr><td>Aceite vegetal</td><td>~${r.grams>0?((r.aceite/r.grams)*100).toFixed(1):1}%</td><td class="right">${r.aceite}g</td></tr>
+          <tr><td>Colorante / aditivo</td><td>~${r.grams>0?((r.color/r.grams)*100).toFixed(1):1}%</td><td class="right">${r.color}g</td></tr>
+          <tr class="subtotal"><td colspan="2"><strong>Total lote (${r.qty} jabones)</strong></td><td class="right"><strong>${r.grams}g</strong></td></tr>
+        </table>
+
+        ${bd.table}
+        ${bd.priceGrid}
+      </div>
+    </div>`;
+  }).join('<div style="height:20px"></div>')}
+
+  <div class="doc-footer">
+    <strong>Belleza Emprendedora · IMEmprende</strong><br>
+    Jabones Artesanales: Crea tu Marca Natural y Aprende a Vender
+  </div>
+
+  </div></body></html>`);
+  w.document.close();
+  w.onload = function() { setTimeout(()=>{ w.focus(); w.print(); }, 200); };
+  setTimeout(()=>{ w.focus(); w.print(); }, 1200);
+}
+
+
+// ── TOAST ────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+
+// ── NOMBRE RECETA → sync preview en recetario ────────────────
+function onNombreChange() {
+  updateRecCurrentPreview();
+}
+
+function updateRecCurrentPreview() {
+  const nombre = (document.getElementById('nombre-receta')||{}).value || '';
+  const costo  = (document.getElementById('costo-jabon')||{}).textContent || '$—';
+  const precio = (document.getElementById('precio-ideal')||{}).textContent || '$—';
+  const qty    = (document.getElementById('qty-jabones')||{}).value || '?';
+  const grams  = totalGrams || 0;
+
+  const elNombre  = document.getElementById('rec-cur-nombre');
+  const elDetalle = document.getElementById('rec-cur-detalle');
+  const elCosto   = document.getElementById('rec-cur-costo');
+  const elPrecio  = document.getElementById('rec-cur-precio');
+
+  if (elNombre)  elNombre.textContent  = nombre || '— Sin nombre —';
+  if (elDetalle) elDetalle.textContent = `${grams}g · ${qty} jabones por lote`;
+  if (elCosto)   elCosto.textContent   = costo;
+  if (elPrecio)  elPrecio.textContent  = precio;
+}
+
+// ── FICHA: Llenar selector con recetas guardadas ──────────────
+function populateFichaSelector() {
+  const sel = document.getElementById('ficha-recipe-selector');
+  if (!sel) return;
+  const recipes = getRecipes();
+  sel.innerHTML = '<option value="">▼ Seleccionar receta guardada...</option>'
+    + recipes.map(r => `<option value="${r.id}">${r.name} — ${r.date}</option>`).join('');
+}
+
+// ── FICHA: Cargar receta seleccionada ────────────────────────
+function loadRecipeToFicha() {
+  const sel = document.getElementById('ficha-recipe-selector');
+  if (!sel || !sel.value) return;
+  const r = getRecipes().find(x => x.id === parseInt(sel.value));
+  if (!r) return;
+
+  // Llenar campos de la ficha
+  const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+  setVal('ficha-nombre', r.name);
+  setVal('ficha-peso', Math.round(r.grams / (parseInt(r.qty)||1)));
+  setVal('ficha-costo', parseFloat(r.costoJabon.replace('$',''))||0);
+  setVal('ficha-precio', parseFloat(r.precioIdeal.replace('$',''))||0);
+
+  // Ingredientes auto-detectados
+  const ings = [];
+  if (r.grams)        ings.push('Base de glicerina');
+  if (parseFloat(r.esencia) > 0) ings.push('Esencia aromática');
+  if (parseFloat(r.aceite)  > 0) ings.push('Aceite vegetal');
+  if (parseFloat(r.color)   > 0) ings.push('Colorante / aditivo');
+  if (parseFloat(r.priceAditivos) > 0) ings.push('Aditivos naturales');
+  ['ficha-ing1','ficha-ing2','ficha-ing3','ficha-ing4'].forEach((id,i) => {
+    setVal(id, ings[i] || '');
+  });
+
+  // Foto si tiene
+  if (r.photo) {
+    fichaPhotoB64 = r.photo;
+    const ph = document.getElementById('ficha-photo-placeholder');
+    const pv = document.getElementById('ficha-photo-preview');
+    const pi = document.getElementById('ficha-photo-img');
+    if (ph) ph.style.display = 'none';
+    if (pv) pv.style.display = 'block';
+    if (pi) pi.src = r.photo;
+  }
+
+  previewFicha();
+  showToast('✅ Receta cargada en la ficha');
+}
+
+// ── EXPORTAR CSV ──────────────────────────────────────────────
+function exportCSV() {
+  const recipes = getRecipes();
+  if (!recipes.length) { showToast('No tienes recetas guardadas'); return; }
+
+  const headers = ['Fecha','Nombre Receta','Gramos Base','Esencia (g)',
+    'Aceite (g)','Color (g)','Cantidad Jabones','Costo Lote','Costo Unitario',
+    'Precio Mínimo','Precio Ideal','Precio Premium','Ganancia Unitaria',
+    'Horas MO','Valor Hora','% Costos Fijos','% Costos Variables'];
+
+  const rows = recipes.map(r => [
+    r.date,
+    r.name,
+    r.grams,
+    r.esencia,
+    r.aceite,
+    r.color,
+    r.qty,
+    '', // costo lote — calculado
+    r.costoJabon,
+    r.precioMin || '',
+    r.precioIdeal,
+    r.precioPremium || '',
+    r.ganancia || '',
+    r.horasLote || '',
+    r.valorHora || '',
+    (r.pctFijos || '') + '%',
+    (r.pctVar   || '') + '%',
+  ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(','));
+
+  const csv = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = 'Recetario_Jabones_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('✅ CSV exportado — ábrelo en Google Sheets');
+}
+
+// ── INIT ─────────────────────────────────
+recalc();
+updateSlider('esencia');
+updateSlider('aceite');
+updateSlider('color');
+renderRecipes();
+runSim();
+updateRecCurrentPreview();
+</script>
+</body>
+</html>

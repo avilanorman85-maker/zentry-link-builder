@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX IF NOT EXISTS pages_active_slug_unique_idx ON public.pages (lower(slug)) WHERE status = 'active' AND slug IS NOT NULL AND slug <> '';
